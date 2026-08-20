@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: app2rack
+      POSTGRES_PASSWORD: TVhwfEWVvYIs3YM6c6ctRIcx
+      POSTGRES_DB: app2rack
+    ports:
+      # Host 5433 -> container 5432, so it doesn't clash with a local PostgreSQL
+      # install that may already be listening on the default 5432.
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app2rack -d app2rack"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    build: ./server
+    command: node src/database/migrate.js
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: app2rack
+      DB_PASSWORD: TVhwfEWVvYIs3YM6c6ctRIcx
+      DB_NAME: app2rack
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  backend:
+    build: ./server
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    environment:
+      # Overrides the host-mode values in server/.env - inside the compose
+      # network Postgres is reachable at the service name "postgres" on its
+      # normal port, regardless of what host port it's published on above.
+      DB_HOST: postgres
+      DB_PORT: 5432
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  pgdata:
