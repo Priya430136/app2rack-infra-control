@@ -2,11 +2,7 @@ import axios from "axios";
 import { createIsomorphicFn } from "@tanstack/react-start";
 import { getAuthToken, clearAuthToken, AUTH_COOKIE_NAME } from "./auth-token";
 
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.PROD
-    ? "https://app2rack-infra-control.onrender.com/api"
-    : "http://localhost:5000/api");
+const API_URL = import.meta.env.VITE_API_URL || "https://app2rack-infra-control.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_URL,
