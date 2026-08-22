@@ -2,11 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import api from "./api";
 
-export const listDatasets = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { data } = await api.get("/datasets");
-    return data ?? [];
-  });
+export const listDatasets = createServerFn({ method: "GET" }).handler(async () => {
+  const { data } = await api.get("/datasets");
+  return data ?? [];
+});
 
 const importInput = z.object({
   filename: z.string().min(1).max(255),

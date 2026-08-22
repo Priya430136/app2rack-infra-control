@@ -32,11 +32,13 @@ function Page() {
   const wallet = walletQ.data;
   const plan = plansQ.data?.find((p) => p.code === sub?.plan_code);
   const latestInvoice = invQ.data?.[0];
-  const pct = wallet && wallet.monthly_allowance > 0
-    ? Math.min(100, Math.round((wallet.balance / wallet.monthly_allowance) * 100))
-    : 0;
+  const pct =
+    wallet && wallet.monthly_allowance > 0
+      ? Math.min(100, Math.round((wallet.balance / wallet.monthly_allowance) * 100))
+      : 0;
   const canManageBilling = role === "admin" || role === "moderator";
-  const roleLabel = role === "admin" ? "Admin" : role === "moderator" ? "Infrastructure Engineer" : "User";
+  const roleLabel =
+    role === "admin" ? "Admin" : role === "moderator" ? "Infrastructure Engineer" : "User";
 
   useEffect(() => {
     if (user) {
@@ -78,11 +80,15 @@ function Page() {
                   </Badge>
                 )}
               </div>
-              <p className="text-xs text-muted-foreground">Your current plan, credits, and latest invoice</p>
+              <p className="text-xs text-muted-foreground">
+                Your current plan, credits, and latest invoice
+              </p>
             </div>
             {canManageBilling ? (
               <div className="flex gap-2">
-                <Button asChild size="sm" variant="outline"><Link to="/billing">Manage</Link></Button>
+                <Button asChild size="sm" variant="outline">
+                  <Link to="/billing">Manage</Link>
+                </Button>
                 <Button asChild size="sm" className="bg-gradient-to-r from-primary to-chart-4">
                   <Link to="/billing/pricing">Change plan</Link>
                 </Button>
@@ -95,7 +101,11 @@ function Page() {
                   size="sm"
                   variant="ghost"
                   className="h-7 px-2 text-xs"
-                  onClick={() => toast.info("Ask an Admin or Infrastructure Engineer to change your subscription plan.")}
+                  onClick={() =>
+                    toast.info(
+                      "Ask an Admin or Infrastructure Engineer to change your subscription plan.",
+                    )
+                  }
                 >
                   Request change
                 </Button>
@@ -106,13 +116,20 @@ function Page() {
           <div className="grid gap-4 sm:grid-cols-4">
             <div className="rounded-md border border-border/60 bg-background/40 p-3">
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Plan</p>
-              <p className="mt-1 text-lg font-bold capitalize">{plan?.name ?? sub?.plan_code ?? "Free"}</p>
+              <p className="mt-1 text-lg font-bold capitalize">
+                {plan?.name ?? sub?.plan_code ?? "Free"}
+              </p>
               <div className="mt-1 flex flex-wrap gap-1">
-                <Badge variant={sub?.status === "active" ? "default" : "secondary"} className="text-[10px] capitalize">
+                <Badge
+                  variant={sub?.status === "active" ? "default" : "secondary"}
+                  className="text-[10px] capitalize"
+                >
                   {sub?.status ?? "active"}
                 </Badge>
                 {sub?.cancel_at_period_end && (
-                  <Badge variant="destructive" className="text-[10px]">Cancels soon</Badge>
+                  <Badge variant="destructive" className="text-[10px]">
+                    Cancels soon
+                  </Badge>
                 )}
               </div>
             </div>
@@ -122,7 +139,9 @@ function Page() {
                 <Zap className="h-3 w-3" /> Credits
               </p>
               <p className="mt-1 text-lg font-bold">{wallet?.balance ?? 0}</p>
-              <p className="text-[10px] text-muted-foreground">of {wallet?.monthly_allowance ?? 0} · {pct}%</p>
+              <p className="text-[10px] text-muted-foreground">
+                of {wallet?.monthly_allowance ?? 0} · {pct}%
+              </p>
             </div>
 
             <div className="rounded-md border border-border/60 bg-background/40 p-3">
@@ -130,9 +149,13 @@ function Page() {
                 <Calendar className="h-3 w-3" /> Renewal
               </p>
               <p className="mt-1 text-sm font-medium">
-                {sub?.current_period_end ? new Date(sub.current_period_end).toLocaleDateString() : "—"}
+                {sub?.current_period_end
+                  ? new Date(sub.current_period_end).toLocaleDateString()
+                  : "—"}
               </p>
-              <p className="text-[10px] capitalize text-muted-foreground">{sub?.billing_cycle ?? "monthly"}</p>
+              <p className="text-[10px] capitalize text-muted-foreground">
+                {sub?.billing_cycle ?? "monthly"}
+              </p>
             </div>
 
             <div className="rounded-md border border-border/60 bg-background/40 p-3">
@@ -141,9 +164,13 @@ function Page() {
               </p>
               {latestInvoice ? (
                 <>
-                  <p className="mt-1 text-sm font-medium">${Number(latestInvoice.amount).toFixed(2)}</p>
+                  <p className="mt-1 text-sm font-medium">
+                    ${Number(latestInvoice.amount).toFixed(2)}
+                  </p>
                   <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                    <Badge variant="outline" className="text-[10px] capitalize">{latestInvoice.status}</Badge>
+                    <Badge variant="outline" className="text-[10px] capitalize">
+                      {latestInvoice.status}
+                    </Badge>
                     <span>{new Date(latestInvoice.created_at).toLocaleDateString()}</span>
                   </div>
                 </>
@@ -206,7 +233,10 @@ function Page() {
           <p className="mb-4 text-xs text-muted-foreground">Connected systems</p>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
             {["Prometheus", "Grafana", "PagerDuty", "Slack", "Datadog", "ServiceNow"].map((n) => (
-              <div key={n} className="flex items-center justify-between rounded-md border border-border/60 bg-background/40 px-4 py-3">
+              <div
+                key={n}
+                className="flex items-center justify-between rounded-md border border-border/60 bg-background/40 px-4 py-3"
+              >
                 <div>
                   <p className="text-sm font-medium">{n}</p>
                   <p className="text-[10px] text-muted-foreground">Connected</p>

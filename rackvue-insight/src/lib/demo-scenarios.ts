@@ -62,7 +62,11 @@ function buildServers(
   racks: RackRow[],
   opts: {
     perRack?: number;
-    load: (server: { rackIndex: number; slot: number; dc: string }) => Pick<ServerRow, "cpu" | "ram" | "storage" | "status">;
+    load: (server: {
+      rackIndex: number;
+      slot: number;
+      dc: string;
+    }) => Pick<ServerRow, "cpu" | "ram" | "storage" | "status">;
   },
 ): ServerRow[] {
   const perRack = opts.perRack ?? 8;
@@ -94,10 +98,24 @@ function buildServers(
 }
 
 const APP_NAMES = [
-  "checkout-api", "auth-service", "orders-svc", "search-api", "inventory-db",
-  "billing-gw", "notification-hub", "analytics-etl", "recommendation-ml",
-  "cdn-edge", "media-encoder", "session-store", "audit-pipeline", "risk-scoring",
-  "cart-service", "shipping-router", "fraud-detector", "loyalty-engine",
+  "checkout-api",
+  "auth-service",
+  "orders-svc",
+  "search-api",
+  "inventory-db",
+  "billing-gw",
+  "notification-hub",
+  "analytics-etl",
+  "recommendation-ml",
+  "cdn-edge",
+  "media-encoder",
+  "session-store",
+  "audit-pipeline",
+  "risk-scoring",
+  "cart-service",
+  "shipping-router",
+  "fraud-detector",
+  "loyalty-engine",
 ];
 
 function buildApplications(
@@ -182,8 +200,20 @@ export const SCENARIOS: ScenarioDef[] = [
       });
       const applications = buildApplications(servers, 0.7, "mixed");
       const incidents = pickIncidents(servers, [
-        { title: "Log ingestion lag > 90s", severity: "Low", status: "Resolved", minsAgo: 320, downtime: 12 },
-        { title: "Cert renewal warning · auth-service", severity: "Medium", status: "Resolved", minsAgo: 180, downtime: 0 },
+        {
+          title: "Log ingestion lag > 90s",
+          severity: "Low",
+          status: "Resolved",
+          minsAgo: 320,
+          downtime: 12,
+        },
+        {
+          title: "Cert renewal warning · auth-service",
+          severity: "Medium",
+          status: "Resolved",
+          minsAgo: 180,
+          downtime: 0,
+        },
       ]);
       return { racks, servers, applications, incidents: { incidents } };
     },
@@ -225,12 +255,53 @@ export const SCENARIOS: ScenarioDef[] = [
       });
       const applications = buildApplications(servers, 0.7, "high");
       const incidents = pickIncidents(servers, [
-        { title: "TOR switch failure · East-01-R1", severity: "Critical", status: "Mitigating", minsAgo: 14, downtime: 14, notes: "BGP routes withdrawn. Rerouting via East-02.", match: (s) => s.status === "offline" },
-        { title: "checkout-api p99 latency > 4s", severity: "Critical", status: "Investigating", minsAgo: 12, downtime: 12, match: (s) => s.status === "critical" },
-        { title: "auth-service 5xx rate 18%", severity: "High", status: "Investigating", minsAgo: 11, downtime: 11, match: (s) => s.status === "critical" },
-        { title: "orders-svc queue backlog 42k msgs", severity: "High", status: "Open", minsAgo: 9, downtime: 9, match: (s) => s.status === "critical" },
-        { title: "Cross-AZ replication lag > 60s", severity: "Medium", status: "Investigating", minsAgo: 7, downtime: 0 },
-        { title: "Cache hit rate dropped 22%", severity: "Medium", status: "Open", minsAgo: 5, downtime: 0 },
+        {
+          title: "TOR switch failure · East-01-R1",
+          severity: "Critical",
+          status: "Mitigating",
+          minsAgo: 14,
+          downtime: 14,
+          notes: "BGP routes withdrawn. Rerouting via East-02.",
+          match: (s) => s.status === "offline",
+        },
+        {
+          title: "checkout-api p99 latency > 4s",
+          severity: "Critical",
+          status: "Investigating",
+          minsAgo: 12,
+          downtime: 12,
+          match: (s) => s.status === "critical",
+        },
+        {
+          title: "auth-service 5xx rate 18%",
+          severity: "High",
+          status: "Investigating",
+          minsAgo: 11,
+          downtime: 11,
+          match: (s) => s.status === "critical",
+        },
+        {
+          title: "orders-svc queue backlog 42k msgs",
+          severity: "High",
+          status: "Open",
+          minsAgo: 9,
+          downtime: 9,
+          match: (s) => s.status === "critical",
+        },
+        {
+          title: "Cross-AZ replication lag > 60s",
+          severity: "Medium",
+          status: "Investigating",
+          minsAgo: 7,
+          downtime: 0,
+        },
+        {
+          title: "Cache hit rate dropped 22%",
+          severity: "Medium",
+          status: "Open",
+          minsAgo: 5,
+          downtime: 0,
+        },
       ]);
       return { racks, servers, applications, incidents: { incidents } };
     },
@@ -251,17 +322,50 @@ export const SCENARIOS: ScenarioDef[] = [
             cpu,
             ram,
             storage: 68 + Math.round(Math.random() * 18),
-            status: cpu > 92 ? "critical" : cpu > 85 ? "warning" : slot % 5 === 0 ? "warning" : "healthy",
+            status:
+              cpu > 92 ? "critical" : cpu > 85 ? "warning" : slot % 5 === 0 ? "warning" : "healthy",
           };
         },
       });
       const applications = buildApplications(servers, 0.7, "high");
       const incidents = pickIncidents(servers, [
-        { title: "checkout-api CPU throttling", severity: "High", status: "Mitigating", minsAgo: 22, downtime: 0, match: (s) => s.status === "warning" },
-        { title: "search-api p95 latency 1.8s", severity: "Medium", status: "Investigating", minsAgo: 18, downtime: 0 },
-        { title: "recommendation-ml OOM restarts (3)", severity: "Medium", status: "Open", minsAgo: 12, downtime: 6 },
-        { title: "CDN origin shield saturation", severity: "Medium", status: "Mitigating", minsAgo: 8, downtime: 0 },
-        { title: "session-store connection pool exhausted", severity: "High", status: "Open", minsAgo: 4, downtime: 0, match: (s) => s.status === "critical" },
+        {
+          title: "checkout-api CPU throttling",
+          severity: "High",
+          status: "Mitigating",
+          minsAgo: 22,
+          downtime: 0,
+          match: (s) => s.status === "warning",
+        },
+        {
+          title: "search-api p95 latency 1.8s",
+          severity: "Medium",
+          status: "Investigating",
+          minsAgo: 18,
+          downtime: 0,
+        },
+        {
+          title: "recommendation-ml OOM restarts (3)",
+          severity: "Medium",
+          status: "Open",
+          minsAgo: 12,
+          downtime: 6,
+        },
+        {
+          title: "CDN origin shield saturation",
+          severity: "Medium",
+          status: "Mitigating",
+          minsAgo: 8,
+          downtime: 0,
+        },
+        {
+          title: "session-store connection pool exhausted",
+          severity: "High",
+          status: "Open",
+          minsAgo: 4,
+          downtime: 0,
+          match: (s) => s.status === "critical",
+        },
       ]);
       return { racks, servers, applications, incidents: { incidents } };
     },
@@ -270,7 +374,8 @@ export const SCENARIOS: ScenarioDef[] = [
     id: "ransomware",
     name: "Ransomware containment",
     tagline: "Isolating lateral movement",
-    narrative: "IDS flagged suspicious SMB traffic. Affected segments quarantined; forensics active.",
+    narrative:
+      "IDS flagged suspicious SMB traffic. Affected segments quarantined; forensics active.",
     tone: "critical",
     build: () => {
       const racks = baseRacks();
@@ -290,11 +395,43 @@ export const SCENARIOS: ScenarioDef[] = [
       });
       const applications = buildApplications(servers, 0.7, "high");
       const incidents = pickIncidents(servers, [
-        { title: "IDS: encrypted SMB traffic from West-01-R3", severity: "Critical", status: "Investigating", minsAgo: 42, downtime: 0, match: (s) => s.status === "critical" },
-        { title: "Quarantine: 4 hosts isolated from network", severity: "Critical", status: "Mitigating", minsAgo: 35, downtime: 35, match: (s) => s.status === "offline" },
-        { title: "Unusual outbound to 185.220.x.x", severity: "High", status: "Investigating", minsAgo: 28, downtime: 0 },
-        { title: "audit-pipeline: 12k anomalous auth events", severity: "High", status: "Open", minsAgo: 20, downtime: 0 },
-        { title: "Backup restore validated (T-2h snapshot)", severity: "Medium", status: "Resolved", minsAgo: 10, downtime: 0 },
+        {
+          title: "IDS: encrypted SMB traffic from West-01-R3",
+          severity: "Critical",
+          status: "Investigating",
+          minsAgo: 42,
+          downtime: 0,
+          match: (s) => s.status === "critical",
+        },
+        {
+          title: "Quarantine: 4 hosts isolated from network",
+          severity: "Critical",
+          status: "Mitigating",
+          minsAgo: 35,
+          downtime: 35,
+          match: (s) => s.status === "offline",
+        },
+        {
+          title: "Unusual outbound to 185.220.x.x",
+          severity: "High",
+          status: "Investigating",
+          minsAgo: 28,
+          downtime: 0,
+        },
+        {
+          title: "audit-pipeline: 12k anomalous auth events",
+          severity: "High",
+          status: "Open",
+          minsAgo: 20,
+          downtime: 0,
+        },
+        {
+          title: "Backup restore validated (T-2h snapshot)",
+          severity: "Medium",
+          status: "Resolved",
+          minsAgo: 10,
+          downtime: 0,
+        },
       ]);
       return { racks, servers, applications, incidents: { incidents } };
     },
@@ -307,8 +444,11 @@ export const SCENARIOS: ScenarioDef[] = [
     tone: "warning",
     build: () => {
       const racks = baseRacks({
-        "rack-0-0-000": 28, "rack-0-1-001": 29, "rack-0-2-002": 27,
-        "rack-1-0-000": 26, "rack-1-1-001": 28,
+        "rack-0-0-000": 28,
+        "rack-0-1-001": 29,
+        "rack-0-2-002": 27,
+        "rack-1-0-000": 26,
+        "rack-1-1-001": 28,
       });
       const servers = buildServers(racks, {
         perRack: 12,
@@ -324,11 +464,41 @@ export const SCENARIOS: ScenarioDef[] = [
       });
       const applications = buildApplications(servers, 0.7, "mixed");
       const incidents = pickIncidents(servers, [
-        { title: "Rack East-01-R1 at 33°C · above target", severity: "High", status: "Open", minsAgo: 55, downtime: 0 },
-        { title: "Disk usage > 88% on 14 nodes", severity: "Medium", status: "Investigating", minsAgo: 40, downtime: 0 },
-        { title: "PDU-A load at 92% (limit 95%)", severity: "Medium", status: "Open", minsAgo: 30, downtime: 0 },
-        { title: "inventory-db WAL growth 3× normal", severity: "Medium", status: "Investigating", minsAgo: 18, downtime: 0 },
-        { title: "Forecast: capacity runway 11 days", severity: "High", status: "Open", minsAgo: 5, downtime: 0 },
+        {
+          title: "Rack East-01-R1 at 33°C · above target",
+          severity: "High",
+          status: "Open",
+          minsAgo: 55,
+          downtime: 0,
+        },
+        {
+          title: "Disk usage > 88% on 14 nodes",
+          severity: "Medium",
+          status: "Investigating",
+          minsAgo: 40,
+          downtime: 0,
+        },
+        {
+          title: "PDU-A load at 92% (limit 95%)",
+          severity: "Medium",
+          status: "Open",
+          minsAgo: 30,
+          downtime: 0,
+        },
+        {
+          title: "inventory-db WAL growth 3× normal",
+          severity: "Medium",
+          status: "Investigating",
+          minsAgo: 18,
+          downtime: 0,
+        },
+        {
+          title: "Forecast: capacity runway 11 days",
+          severity: "High",
+          status: "Open",
+          minsAgo: 5,
+          downtime: 0,
+        },
       ]);
       return { racks, servers, applications, incidents: { incidents } };
     },

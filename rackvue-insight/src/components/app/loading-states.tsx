@@ -45,15 +45,27 @@ export function CardGridSkeleton({ count = 6, minH = 180 }: { count?: number; mi
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 animate-pulse rounded-md bg-muted/60" />
             <div className="flex-1 space-y-2">
-              <div className="h-3 w-24 animate-pulse rounded bg-muted/60" style={{ animationDelay: `${i * 60}ms` }} />
-              <div className="h-2.5 w-16 animate-pulse rounded bg-muted/40" style={{ animationDelay: `${i * 60 + 80}ms` }} />
+              <div
+                className="h-3 w-24 animate-pulse rounded bg-muted/60"
+                style={{ animationDelay: `${i * 60}ms` }}
+              />
+              <div
+                className="h-2.5 w-16 animate-pulse rounded bg-muted/40"
+                style={{ animationDelay: `${i * 60 + 80}ms` }}
+              />
             </div>
           </div>
           <div className="mt-5 grid grid-cols-2 gap-3">
             {Array.from({ length: 4 }).map((_, k) => (
               <div key={k} className="space-y-1.5">
-                <div className="h-2 w-10 animate-pulse rounded bg-muted/40" style={{ animationDelay: `${(i * 4 + k) * 50}ms` }} />
-                <div className="h-3 w-full animate-pulse rounded bg-muted/60" style={{ animationDelay: `${(i * 4 + k) * 50 + 40}ms` }} />
+                <div
+                  className="h-2 w-10 animate-pulse rounded bg-muted/40"
+                  style={{ animationDelay: `${(i * 4 + k) * 50}ms` }}
+                />
+                <div
+                  className="h-3 w-full animate-pulse rounded bg-muted/60"
+                  style={{ animationDelay: `${(i * 4 + k) * 50 + 40}ms` }}
+                />
               </div>
             ))}
           </div>
@@ -70,10 +82,19 @@ export function ListSkeleton({ count = 5 }: { count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <Card key={i} className="border-border/60 bg-card/60 p-4 backdrop-blur">
           <div className="flex items-start gap-4">
-            <div className="h-9 w-9 animate-pulse rounded-md bg-muted/60" style={{ animationDelay: `${i * 60}ms` }} />
+            <div
+              className="h-9 w-9 animate-pulse rounded-md bg-muted/60"
+              style={{ animationDelay: `${i * 60}ms` }}
+            />
             <div className="flex-1 space-y-2">
-              <div className="h-3 w-2/3 animate-pulse rounded bg-muted/60" style={{ animationDelay: `${i * 60 + 40}ms` }} />
-              <div className="h-2.5 w-1/3 animate-pulse rounded bg-muted/40" style={{ animationDelay: `${i * 60 + 80}ms` }} />
+              <div
+                className="h-3 w-2/3 animate-pulse rounded bg-muted/60"
+                style={{ animationDelay: `${i * 60 + 40}ms` }}
+              />
+              <div
+                className="h-2.5 w-1/3 animate-pulse rounded bg-muted/40"
+                style={{ animationDelay: `${i * 60 + 80}ms` }}
+              />
             </div>
             <div className="h-6 w-16 animate-pulse rounded bg-muted/40" />
           </div>
@@ -104,7 +125,13 @@ export function ErrorState({
         {message ?? "We couldn't load this data. Check your connection and try again."}
       </p>
       {onRetry && (
-        <Button onClick={onRetry} disabled={retrying} size="sm" variant="outline" className="mt-4 gap-1.5">
+        <Button
+          onClick={onRetry}
+          disabled={retrying}
+          size="sm"
+          variant="outline"
+          className="mt-4 gap-1.5"
+        >
           <RefreshCw className={cn("h-3.5 w-3.5", retrying && "animate-spin")} />
           {retrying ? "Retrying…" : "Try again"}
         </Button>

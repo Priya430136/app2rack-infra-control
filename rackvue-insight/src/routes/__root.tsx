@@ -74,17 +74,37 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "App2Rack — Map every app from code to rack" },
-      { name: "description", content: "Enterprise infrastructure intelligence: trace any application down to the rack unit it runs on. Live health, dependency graphs, incident response." },
+      {
+        name: "description",
+        content:
+          "Enterprise infrastructure intelligence: trace any application down to the rack unit it runs on. Live health, dependency graphs, incident response.",
+      },
       { name: "author", content: "App2Rack" },
       { property: "og:title", content: "App2Rack — Map every app from code to rack" },
-      { property: "og:description", content: "Enterprise infrastructure intelligence: trace any application down to the rack unit it runs on. Live health, dependency graphs, incident response." },
+      {
+        property: "og:description",
+        content:
+          "Enterprise infrastructure intelligence: trace any application down to the rack unit it runs on. Live health, dependency graphs, incident response.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "App2Rack — Map every app from code to rack" },
-      { name: "twitter:description", content: "Enterprise infrastructure intelligence: trace any application down to the rack unit it runs on. Live health, dependency graphs, incident response." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8c2eaec8-737d-4f94-8881-84b158954b9f/id-preview-6238d3a0--c2debe11-51a9-4914-a574-282bea96590c.lovable.app-1783515155947.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8c2eaec8-737d-4f94-8881-84b158954b9f/id-preview-6238d3a0--c2debe11-51a9-4914-a574-282bea96590c.lovable.app-1783515155947.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Enterprise infrastructure intelligence: trace any application down to the rack unit it runs on. Live health, dependency graphs, incident response.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8c2eaec8-737d-4f94-8881-84b158954b9f/id-preview-6238d3a0--c2debe11-51a9-4914-a574-282bea96590c.lovable.app-1783515155947.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8c2eaec8-737d-4f94-8881-84b158954b9f/id-preview-6238d3a0--c2debe11-51a9-4914-a574-282bea96590c.lovable.app-1783515155947.png",
+      },
     ],
     links: [
       {

@@ -2,14 +2,12 @@ services:
   postgres:
     image: postgres:17-alpine
     restart: unless-stopped
+    env_file:
+      - ./server/.env
     environment:
       POSTGRES_USER: app2rack
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in server/.env}
       POSTGRES_DB: app2rack
-    ports:
-      # Host 5433 -> container 5432, so it doesn't clash with a local PostgreSQL
-      # install that may already be listening on the default 5432.
-      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -21,12 +19,11 @@ services:
   migrate:
     build: ./server
     command: node src/database/migrate.js
+    env_file:
+      - ./server/.env
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_USER: app2rack
-      DB_PASSWORD: TVhwfEWVvYIs3YM6c6ctRIcx
-      DB_NAME: app2rack
     depends_on:
       postgres:
         condition: service_healthy

@@ -24,19 +24,32 @@ function Page() {
   if (!apps.isLoading && applications.length === 0 && servers.length === 0) {
     return (
       <>
-        <TopBar title="Infrastructure Mapping" subtitle="Application → Server → Rack → Data Center dependency view" />
-        <div className="p-6"><EmptyState entity="mapping data" /></div>
+        <TopBar
+          title="Infrastructure Mapping"
+          subtitle="Application → Server → Rack → Data Center dependency view"
+        />
+        <div className="p-6">
+          <EmptyState entity="mapping data" />
+        </div>
       </>
     );
   }
 
   return (
     <>
-      <TopBar title="Infrastructure Mapping" subtitle="Application → Server → Rack → Data Center dependency view" />
+      <TopBar
+        title="Infrastructure Mapping"
+        subtitle="Application → Server → Rack → Data Center dependency view"
+      />
       <div className="p-6">
         <div className="mb-6 grid grid-cols-4 gap-4">
           {[
-            { label: "Applications", value: applications.length, icon: Boxes, color: "var(--chart-1)" },
+            {
+              label: "Applications",
+              value: applications.length,
+              icon: Boxes,
+              color: "var(--chart-1)",
+            },
             { label: "Servers", value: servers.length, icon: Server, color: "var(--chart-2)" },
             { label: "Racks", value: racks.length, icon: Workflow, color: "var(--chart-3)" },
             { label: "Data Centers", value: dcs.length, icon: Building2, color: "var(--chart-4)" },
@@ -44,7 +57,9 @@ function Page() {
             <Card key={s.label} className="border-border/60 bg-card/60 p-4 backdrop-blur">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{s.label}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                    {s.label}
+                  </p>
                   <p className="mt-1 text-2xl font-semibold">{s.value}</p>
                 </div>
                 <s.icon className="h-5 w-5" style={{ color: s.color }} />
@@ -66,7 +81,9 @@ function Page() {
                     onClick={() => setExpandedApp(isOpen ? null : app.id)}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition hover:bg-background/40"
                   >
-                    <ChevronRight className={`h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-90" : ""}`} />
+                    <ChevronRight
+                      className={`h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-90" : ""}`}
+                    />
                     <Boxes className="h-4 w-4 text-chart-1" />
                     <span className="font-medium">{app.name}</span>
                     <span className="ml-auto text-[10px] text-muted-foreground">{app.env}</span>
@@ -75,13 +92,28 @@ function Page() {
                     <div className="ml-6 border-l border-dashed border-border/60 pl-4 py-2 space-y-2">
                       {srv ? (
                         <>
-                          <Node icon={Server} color="var(--chart-2)" label={srv.name} sub={`${srv.hostname ?? "-"} · ${srv.ip ?? "-"}`} />
+                          <Node
+                            icon={Server}
+                            color="var(--chart-2)"
+                            label={srv.name}
+                            sub={`${srv.hostname ?? "-"} · ${srv.ip ?? "-"}`}
+                          />
                           {rack && (
                             <>
                               <Connector />
-                              <Node icon={Workflow} color="var(--chart-3)" label={rack.name} sub={`Slot U${srv.slot ?? "-"} · ${rack.temperature_c}°C`} />
+                              <Node
+                                icon={Workflow}
+                                color="var(--chart-3)"
+                                label={rack.name}
+                                sub={`Slot U${srv.slot ?? "-"} · ${rack.temperature_c}°C`}
+                              />
                               <Connector />
-                              <Node icon={Building2} color="var(--chart-4)" label={rack.dc} sub="Data Center" />
+                              <Node
+                                icon={Building2}
+                                color="var(--chart-4)"
+                                label={rack.dc}
+                                sub="Data Center"
+                              />
                             </>
                           )}
                         </>
@@ -93,7 +125,9 @@ function Page() {
                 </div>
               );
             })}
-            {applications.length === 0 && <p className="text-xs text-muted-foreground">No applications mapped yet.</p>}
+            {applications.length === 0 && (
+              <p className="text-xs text-muted-foreground">No applications mapped yet.</p>
+            )}
           </div>
         </Card>
       </div>
@@ -101,10 +135,23 @@ function Page() {
   );
 }
 
-function Node({ icon: Icon, color, label, sub }: { icon: any; color: string; label: string; sub: string }) {
+function Node({
+  icon: Icon,
+  color,
+  label,
+  sub,
+}: {
+  icon: any;
+  color: string;
+  label: string;
+  sub: string;
+}) {
   return (
     <div className="flex items-center gap-3 rounded-md border border-border/60 bg-background/40 px-3 py-2">
-      <div className="grid h-8 w-8 place-items-center rounded-md" style={{ background: `${color}22`, color }}>
+      <div
+        className="grid h-8 w-8 place-items-center rounded-md"
+        style={{ background: `${color}22`, color }}
+      >
         <Icon className="h-4 w-4" />
       </div>
       <div className="leading-tight">

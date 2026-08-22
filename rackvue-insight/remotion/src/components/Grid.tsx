@@ -11,8 +11,7 @@ export const Grid: React.FC<{ opacity?: number }> = ({ opacity = 0.35 }) => {
         backgroundImage: `linear-gradient(${theme.border} 1px, transparent 1px), linear-gradient(90deg, ${theme.border} 1px, transparent 1px)`,
         backgroundSize: "80px 80px",
         backgroundPosition: `${shift}px ${shift}px`,
-        maskImage:
-          "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0) 75%)",
+        maskImage: "radial-gradient(ellipse at center, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0) 75%)",
       }}
     />
   );

@@ -11,8 +11,18 @@ import { EmptyState } from "@/components/app/empty-state";
 import { RecommendationsCard } from "@/components/app/recommendations-card";
 import { exportCSV, exportPDF } from "@/lib/exporters";
 import {
-  LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip,
-  RadialBarChart, RadialBar, PolarAngleAxis, BarChart, Bar,
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  RadialBarChart,
+  RadialBar,
+  PolarAngleAxis,
+  BarChart,
+  Bar,
 } from "recharts";
 import { toast } from "sonner";
 
@@ -33,25 +43,27 @@ function Page() {
   const racks = racksQ.data ?? [];
   const metrics = metricsQ.data ?? [];
 
-  if (!serversQ.isLoading && servers.length === 0 && racks.length === 0) {
-    return (
-      <>
-        <TopBar title="Reports & Analytics" subtitle="Operational insights and exportable reports" />
-        <div className="p-6"><EmptyState entity="reporting data" /></div>
-      </>
-    );
-  }
-
   const envDist = ["Production", "UAT", "Dev"].map((e) => ({
-    name: e, apps: applications.filter((a) => a.env === e).length,
+    name: e,
+    apps: applications.filter((a) => a.env === e).length,
   }));
-  const avgCpu = servers.length ? Math.round(servers.reduce((s, x) => s + x.cpu, 0) / servers.length) : 0;
-  const avgRam = servers.length ? Math.round(servers.reduce((s, x) => s + x.ram, 0) / servers.length) : 0;
-  const avgDisk = servers.length ? Math.round(servers.reduce((s, x) => s + x.storage, 0) / servers.length) : 0;
+  const avgCpu = servers.length
+    ? Math.round(servers.reduce((s, x) => s + x.cpu, 0) / servers.length)
+    : 0;
+  const avgRam = servers.length
+    ? Math.round(servers.reduce((s, x) => s + x.ram, 0) / servers.length)
+    : 0;
+  const avgDisk = servers.length
+    ? Math.round(servers.reduce((s, x) => s + x.storage, 0) / servers.length)
+    : 0;
 
   const availability = metrics.length
     ? metrics.map((m: any) => ({
-        hour: new Date(m.captured_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }),
+        hour: new Date(m.captured_at).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
         uptime: 99 + (m.cpu > 70 ? -1 : 0.5),
       }))
     : [];
@@ -59,8 +71,14 @@ function Page() {
   function exportFleetCsv() {
     exportCSV(
       servers.map((s) => ({
-        name: s.name, hostname: s.hostname, ip: s.ip, os: s.os,
-        cpu: s.cpu, ram: s.ram, storage: s.storage, status: s.status,
+        name: s.name,
+        hostname: s.hostname,
+        ip: s.ip,
+        os: s.os,
+        cpu: s.cpu,
+        ram: s.ram,
+        storage: s.storage,
+        status: s.status,
       })),
       `fleet-report-${new Date().toISOString().slice(0, 10)}`,
     );
@@ -90,10 +108,20 @@ function Page() {
           name: `Infrastructure Summary — ${new Date().toLocaleDateString()}`,
           type: "infrastructure_summary",
           params: {},
-          summary: { applications: applications.length, servers: servers.length, racks: racks.length, avgCpu, avgRam, avgDisk },
+          summary: {
+            applications: applications.length,
+            servers: servers.length,
+            racks: racks.length,
+            avgCpu,
+            avgRam,
+            avgDisk,
+          },
         },
       }),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["reports"] }); toast.success("Report saved"); },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["reports"] });
+      toast.success("Report saved");
+    },
     onError: () => toast.error("Failed to save report"),
   });
   const delMut = useMutation({
@@ -101,19 +129,39 @@ function Page() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["reports"] }),
   });
 
+  if (!serversQ.isLoading && servers.length === 0 && racks.length === 0) {
+    return (
+      <>
+        <TopBar
+          title="Reports & Analytics"
+          subtitle="Operational insights and exportable reports"
+        />
+        <div className="p-6">
+          <EmptyState entity="reporting data" />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <TopBar title="Reports & Analytics" subtitle="Operational insights and exportable reports" />
       <div className="space-y-4 p-6">
         <div className="flex flex-wrap gap-2">
           <Button size="sm" variant="outline" onClick={exportSummaryPdf}>
-            <FileText className="mr-1.5 h-3.5 w-3.5" />Export PDF
+            <FileText className="mr-1.5 h-3.5 w-3.5" />
+            Export PDF
           </Button>
           <Button size="sm" variant="outline" onClick={exportFleetCsv}>
-            <Download className="mr-1.5 h-3.5 w-3.5" />Export CSV
+            <Download className="mr-1.5 h-3.5 w-3.5" />
+            Export CSV
           </Button>
           <Button size="sm" onClick={() => saveMut.mutate()} disabled={saveMut.isPending}>
-            {saveMut.isPending ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Save className="mr-1.5 h-3.5 w-3.5" />}
+            {saveMut.isPending ? (
+              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Save className="mr-1.5 h-3.5 w-3.5" />
+            )}
             Save Snapshot
           </Button>
         </div>
@@ -128,9 +176,20 @@ function Page() {
               <p className="text-xs uppercase tracking-wider text-muted-foreground">{m.label}</p>
               <div className="h-40">
                 <ResponsiveContainer>
-                  <RadialBarChart innerRadius="70%" outerRadius="100%" data={[{ value: m.value }]} startAngle={90} endAngle={-270}>
+                  <RadialBarChart
+                    innerRadius="70%"
+                    outerRadius="100%"
+                    data={[{ value: m.value }]}
+                    startAngle={90}
+                    endAngle={-270}
+                  >
                     <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-                    <RadialBar dataKey="value" fill={m.color} cornerRadius={20} background={{ fill: "var(--muted)" }} />
+                    <RadialBar
+                      dataKey="value"
+                      fill={m.color}
+                      cornerRadius={20}
+                      background={{ fill: "var(--muted)" }}
+                    />
                   </RadialBarChart>
                 </ResponsiveContainer>
               </div>
@@ -147,9 +206,26 @@ function Page() {
               <ResponsiveContainer>
                 <BarChart data={envDist}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                  <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
-                  <YAxis stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
-                  <Tooltip contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                  <XAxis
+                    dataKey="name"
+                    stroke="var(--muted-foreground)"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    stroke="var(--muted-foreground)"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "var(--popover)",
+                      border: "1px solid var(--border)",
+                      borderRadius: 8,
+                    }}
+                  />
                   <Bar dataKey="apps" fill="var(--chart-1)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -167,10 +243,34 @@ function Page() {
                 <ResponsiveContainer>
                   <LineChart data={availability}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                    <XAxis dataKey="hour" stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
-                    <YAxis domain={[95, 100]} stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
-                    <Tooltip contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                    <Line type="monotone" dataKey="uptime" stroke="var(--success)" strokeWidth={2} dot={false} />
+                    <XAxis
+                      dataKey="hour"
+                      stroke="var(--muted-foreground)"
+                      fontSize={10}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <YAxis
+                      domain={[95, 100]}
+                      stroke="var(--muted-foreground)"
+                      fontSize={10}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        background: "var(--popover)",
+                        border: "1px solid var(--border)",
+                        borderRadius: 8,
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="uptime"
+                      stroke="var(--success)"
+                      strokeWidth={2}
+                      dot={false}
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               )}
@@ -184,18 +284,31 @@ function Page() {
           <h3 className="mb-4 text-sm font-semibold">Rack Utilization Heatmap</h3>
           <div className="grid grid-cols-6 gap-2">
             {racks.map((r) => {
-              const occ = servers.filter(s => s.rack_id === r.id).length;
+              const occ = servers.filter((s) => s.rack_id === r.id).length;
               const util = (occ / Math.max(1, r.capacity_u)) * 100;
-              const color = util > 80 ? "var(--destructive)" : util > 50 ? "var(--warning)" : "var(--success)";
+              const color =
+                util > 80 ? "var(--destructive)" : util > 50 ? "var(--warning)" : "var(--success)";
               return (
-                <div key={r.id} className="rounded-md border border-border/60 p-3 text-center" style={{ background: `${color}15` }}>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground truncate">{r.name}</p>
-                  <p className="mt-1 text-xl font-semibold" style={{ color }}>{Math.round(util)}%</p>
-                  <p className="text-[10px] text-muted-foreground">{occ}/{r.capacity_u} U</p>
+                <div
+                  key={r.id}
+                  className="rounded-md border border-border/60 p-3 text-center"
+                  style={{ background: `${color}15` }}
+                >
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground truncate">
+                    {r.name}
+                  </p>
+                  <p className="mt-1 text-xl font-semibold" style={{ color }}>
+                    {Math.round(util)}%
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {occ}/{r.capacity_u} U
+                  </p>
                 </div>
               );
             })}
-            {racks.length === 0 && <p className="col-span-6 text-center text-xs text-muted-foreground">No rack data.</p>}
+            {racks.length === 0 && (
+              <p className="col-span-6 text-center text-xs text-muted-foreground">No rack data.</p>
+            )}
           </div>
         </Card>
 
@@ -204,18 +317,31 @@ function Page() {
           {savedReportsQ.isLoading ? (
             <p className="text-xs text-muted-foreground">Loading…</p>
           ) : (savedReportsQ.data ?? []).length === 0 ? (
-            <p className="text-xs text-muted-foreground">No saved snapshots yet — click "Save Snapshot" above to record one.</p>
+            <p className="text-xs text-muted-foreground">
+              No saved snapshots yet — click "Save Snapshot" above to record one.
+            </p>
           ) : (
             <div className="space-y-2">
               {(savedReportsQ.data ?? []).map((r: any) => (
-                <div key={r.id} className="flex items-center gap-3 rounded-md border border-border/40 bg-background/30 px-3 py-2 text-xs">
+                <div
+                  key={r.id}
+                  className="flex items-center gap-3 rounded-md border border-border/40 bg-background/30 px-3 py-2 text-xs"
+                >
                   <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                   <span className="font-medium">{r.name}</span>
                   <span className="text-muted-foreground">
-                    {r.summary?.applications ?? 0} apps · {r.summary?.servers ?? 0} servers · avg CPU {r.summary?.avgCpu ?? 0}%
+                    {r.summary?.applications ?? 0} apps · {r.summary?.servers ?? 0} servers · avg
+                    CPU {r.summary?.avgCpu ?? 0}%
                   </span>
-                  <span className="ml-auto text-muted-foreground">{new Date(r.generated_at ?? r.created_at).toLocaleString()}</span>
-                  <Button size="icon" variant="ghost" className="h-6 w-6 text-destructive" onClick={() => delMut.mutate(r.id)}>
+                  <span className="ml-auto text-muted-foreground">
+                    {new Date(r.generated_at ?? r.created_at).toLocaleString()}
+                  </span>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-6 w-6 text-destructive"
+                    onClick={() => delMut.mutate(r.id)}
+                  >
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
                 </div>

@@ -1,23 +1,32 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
-  DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { FlaskConical, Check, X, AlertTriangle, ShieldAlert, Zap, Activity, Layers } from "lucide-react";
 import {
-  SCENARIOS, getScenario, type ScenarioTone,
-} from "@/lib/demo-scenarios";
-import {
-  activateScenario, clearScenario, useActiveScenarioId,
-} from "@/lib/demo-scenario-store";
+  FlaskConical,
+  Check,
+  X,
+  AlertTriangle,
+  ShieldAlert,
+  Zap,
+  Activity,
+  Layers,
+} from "lucide-react";
+import { SCENARIOS, getScenario, type ScenarioTone } from "@/lib/demo-scenarios";
+import { activateScenario, clearScenario, useActiveScenarioId } from "@/lib/demo-scenario-store";
 import { toast } from "sonner";
 
 const ICONS: Record<string, typeof Activity> = {
-  "nominal": Activity,
+  nominal: Activity,
   "cascading-outage": ShieldAlert,
   "peak-load": Zap,
-  "ransomware": ShieldAlert,
+  ransomware: ShieldAlert,
   "capacity-crunch": Layers,
 };
 
@@ -59,9 +68,7 @@ export function ScenarioSwitcher() {
           }
         >
           <FlaskConical className="h-3.5 w-3.5" />
-          <span className="text-xs font-medium">
-            {active ? active.name : "Demo scenarios"}
-          </span>
+          <span className="text-xs font-medium">{active ? active.name : "Demo scenarios"}</span>
           {active && (
             <span
               className="ml-1 h-1.5 w-1.5 rounded-full"
@@ -70,13 +77,17 @@ export function ScenarioSwitcher() {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[22rem] border-border/60 bg-popover/95 p-0 backdrop-blur-xl">
+      <DropdownMenuContent
+        align="end"
+        className="w-[22rem] border-border/60 bg-popover/95 p-0 backdrop-blur-xl"
+      >
         <div className="px-3 pt-3 pb-2">
           <DropdownMenuLabel className="p-0 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Enterprise demo scenarios
           </DropdownMenuLabel>
           <p className="mt-1 text-[11px] text-muted-foreground">
-            Simulate outage and utilization patterns across the fleet. Overrides live data for this session.
+            Simulate outage and utilization patterns across the fleet. Overrides live data for this
+            session.
           </p>
         </div>
         <DropdownMenuSeparator />
@@ -87,7 +98,10 @@ export function ScenarioSwitcher() {
             return (
               <DropdownMenuItem
                 key={s.id}
-                onSelect={(e) => { e.preventDefault(); pick(s.id); }}
+                onSelect={(e) => {
+                  e.preventDefault();
+                  pick(s.id);
+                }}
                 className={
                   "flex items-start gap-3 rounded-md px-2.5 py-2.5 " +
                   (isActive ? "bg-primary/10 focus:bg-primary/15" : "focus:bg-accent/70")
@@ -108,7 +122,10 @@ export function ScenarioSwitcher() {
                     <span className="truncate text-sm font-medium text-foreground">{s.name}</span>
                     {isActive && <Check className="h-3 w-3 text-primary" />}
                   </span>
-                  <span className="mt-0.5 block truncate text-[11px] font-medium" style={{ color: TONE_COLOR[s.tone] }}>
+                  <span
+                    className="mt-0.5 block truncate text-[11px] font-medium"
+                    style={{ color: TONE_COLOR[s.tone] }}
+                  >
                     {s.tagline}
                   </span>
                   <span className="mt-0.5 block text-[11px] leading-snug text-muted-foreground">
@@ -160,7 +177,10 @@ export function ScenarioBanner() {
       <span className="text-muted-foreground">— {active.narrative}</span>
       <button
         type="button"
-        onClick={() => { clearScenario(qc); toast.message("Restored live data"); }}
+        onClick={() => {
+          clearScenario(qc);
+          toast.message("Restored live data");
+        }}
         className="ml-auto inline-flex items-center gap-1 rounded border border-border/60 bg-background/60 px-2 py-0.5 text-[11px] font-medium text-muted-foreground transition hover:text-foreground"
       >
         <X className="h-3 w-3" /> Restore live data

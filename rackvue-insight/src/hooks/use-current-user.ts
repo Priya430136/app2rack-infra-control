@@ -15,7 +15,7 @@ export function useCurrentUser() {
   useEffect(() => {
     let active = true;
     async function load() {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
         if (active) {
           setUser(null);
@@ -27,7 +27,7 @@ export function useCurrentUser() {
       try {
         const { data } = await api.get("/auth/me");
         if (!active) return;
-        
+
         const userData = data.data;
         setUser({
           id: userData.id,
@@ -38,26 +38,26 @@ export function useCurrentUser() {
       } catch (err) {
         if (active) {
           setUser(null);
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
         }
       } finally {
         if (active) setLoading(false);
       }
     }
-    
+
     load();
-    
+
     // Listen for storage changes (for logout in other tabs)
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'token' && !e.newValue) {
+      if (e.key === "token" && !e.newValue) {
         setUser(null);
       }
     };
-    window.addEventListener('storage', handleStorageChange);
-    
+    window.addEventListener("storage", handleStorageChange);
+
     return () => {
       active = false;
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
 

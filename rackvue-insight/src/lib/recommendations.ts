@@ -8,13 +8,22 @@ export type Recommendation = {
 };
 
 export function computeRecommendations({
-  racks, servers, applications,
+  racks,
+  servers,
+  applications,
 }: {
-  racks: RackRow[]; servers: ServerRow[]; applications: ApplicationRow[];
+  racks: RackRow[];
+  servers: ServerRow[];
+  applications: ApplicationRow[];
 }): Recommendation[] {
   const out: Recommendation[] = [];
   if (servers.length === 0) {
-    out.push({ id: "no-data", level: "info", title: "No infrastructure data yet", detail: "Seed demo data or import a dataset to unlock recommendations." });
+    out.push({
+      id: "no-data",
+      level: "info",
+      title: "No infrastructure data yet",
+      detail: "Seed demo data or import a dataset to unlock recommendations.",
+    });
     return out;
   }
 

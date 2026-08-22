@@ -10,12 +10,16 @@ export const listCalcHistory = createServerFn({ method: "GET" })
   });
 
 export const saveCalc = createServerFn({ method: "POST" })
-  .inputValidator((i: unknown) => z.object({
-    kind: z.enum(["storage", "rack", "cloud"]),
-    label: z.string().max(200).optional(),
-    inputs: z.record(z.string(), z.any()),
-    outputs: z.record(z.string(), z.any()),
-  }).parse(i))
+  .inputValidator((i: unknown) =>
+    z
+      .object({
+        kind: z.enum(["storage", "rack", "cloud"]),
+        label: z.string().max(200).optional(),
+        inputs: z.record(z.string(), z.any()),
+        outputs: z.record(z.string(), z.any()),
+      })
+      .parse(i),
+  )
   .handler(async ({ data }) => {
     const { data: res } = await api.post("/calc-history", data);
     return res;

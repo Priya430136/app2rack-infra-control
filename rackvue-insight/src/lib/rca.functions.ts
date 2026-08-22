@@ -19,14 +19,16 @@ export type RcaReport = {
 // ============ RUN ANALYSIS ============
 export const runRcaAnalysis = createServerFn({ method: "POST" })
   .inputValidator((i: unknown) =>
-    z.object({
-      incidentId: z.string().uuid().optional(),
-      serverId: z.string().uuid().optional(),
-      title: z.string().max(300).optional(),
-      severity: z.string().max(20).optional(),
-      notes: z.string().max(2000).optional(),
-      save: z.boolean().optional().default(true),
-    }).parse(i),
+    z
+      .object({
+        incidentId: z.string().uuid().optional(),
+        serverId: z.string().uuid().optional(),
+        title: z.string().max(300).optional(),
+        severity: z.string().max(20).optional(),
+        notes: z.string().max(2000).optional(),
+        save: z.boolean().optional().default(true),
+      })
+      .parse(i),
   )
   .handler(async ({ data }) => {
     // The actual analysis (AI if configured, rule-based fallback otherwise) runs

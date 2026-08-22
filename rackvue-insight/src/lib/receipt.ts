@@ -17,7 +17,9 @@ export function receiptHtml(d: ReceiptData): string {
   const cur = d.currency ?? "USD";
   const amt = typeof d.amount === "number" ? d.amount.toFixed(2) : d.amount;
   const row = (label: string, value?: string | number) =>
-    value == null || value === "" ? "" : `<tr><td style="padding:6px 12px;color:#64748b;">${label}</td><td style="padding:6px 12px;text-align:right;color:#0f172a;font-weight:500;">${value}</td></tr>`;
+    value == null || value === ""
+      ? ""
+      : `<tr><td style="padding:6px 12px;color:#64748b;">${label}</td><td style="padding:6px 12px;text-align:right;color:#0f172a;font-weight:500;">${value}</td></tr>`;
   return `<!doctype html><html><head><meta charset="utf-8"/><title>Receipt ${d.number}</title>
 <style>
  body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f8fafc;margin:0;padding:40px;color:#0f172a}
@@ -84,5 +86,11 @@ export function printReceipt(d: ReceiptData) {
   w.document.open();
   w.document.write(html);
   w.document.close();
-  setTimeout(() => { try { w.print(); } catch { /* ignore */ } }, 300);
+  setTimeout(() => {
+    try {
+      w.print();
+    } catch {
+      /* ignore */
+    }
+  }, 300);
 }

@@ -2,7 +2,16 @@ import { createFileRoute, Link, useNavigate, redirect, useRouter } from "@tansta
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { z } from "zod";
-import { Activity, ArrowLeft, Loader2, Network, Gauge, ShieldCheck, Eye, EyeOff } from "lucide-react";
+import {
+  Activity,
+  ArrowLeft,
+  Loader2,
+  Network,
+  Gauge,
+  ShieldCheck,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,7 +42,7 @@ export const Route = createFileRoute("/login")({
   ssr: false,
   validateSearch: searchSchema,
   beforeLoad: async ({ search }) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       throw redirect({ to: safeRedirectPath(search.redirect) as "/dashboard" });
     }
@@ -45,7 +54,9 @@ function LoginPage() {
   const search = Route.useSearch();
   const navigate = useNavigate();
   const router = useRouter();
-  const [mode, setMode] = useState<"signin" | "signup">(search.mode === "signup" ? "signup" : "signin");
+  const [mode, setMode] = useState<"signin" | "signup">(
+    search.mode === "signup" ? "signup" : "signin",
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -71,12 +82,13 @@ function LoginPage() {
         setNotice("Account created. You can sign in now.");
         setMode("signin");
       } else {
-        const { data } = await api.post("/auth/login", { 
-          email: email.trim(), 
-          password 
+        const { data } = await api.post("/auth/login", {
+          email: email.trim(),
+          password,
         });
-        
-        if (!data.token) throw new Error("Sign-in failed. Please check your credentials and try again.");
+
+        if (!data.token)
+          throw new Error("Sign-in failed. Please check your credentials and try again.");
 
         setAuthToken(data.token);
         await router.invalidate();
@@ -97,7 +109,10 @@ function LoginPage() {
 
       {/* form side */}
       <div className="relative z-10 flex flex-col px-6 py-8 lg:px-16">
-        <Link to="/" className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
+        >
           <ArrowLeft className="h-3.5 w-3.5" /> Back to overview
         </Link>
 
@@ -113,7 +128,9 @@ function LoginPage() {
             </div>
             <div className="leading-tight">
               <div className="text-sm font-semibold tracking-tight">App2Rack</div>
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Infra Control</div>
+              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                Infra Control
+              </div>
             </div>
           </div>
 
@@ -129,16 +146,34 @@ function LoginPage() {
           <form onSubmit={handleEmail} className="mt-6 space-y-4">
             {mode === "signup" && (
               <div className="space-y-1.5">
-                <Label htmlFor="name" className="text-xs">Full name</Label>
-                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ada Lovelace" />
+                <Label htmlFor="name" className="text-xs">
+                  Full name
+                </Label>
+                <Input
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Ada Lovelace"
+                />
               </div>
             )}
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs">Work email</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="ada@company.io" />
+              <Label htmlFor="email" className="text-xs">
+                Work email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="ada@company.io"
+              />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-xs">Password</Label>
+              <Label htmlFor="password" className="text-xs">
+                Password
+              </Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -162,7 +197,10 @@ function LoginPage() {
               </div>
             </div>
             {formError && (
-              <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+              <div
+                role="alert"
+                className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+              >
                 {formError}
               </div>
             )}
@@ -171,7 +209,11 @@ function LoginPage() {
                 {notice}
               </div>
             )}
-            <Button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-primary to-chart-4 text-primary-foreground shadow-[var(--shadow-glow)]">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-primary to-chart-4 text-primary-foreground shadow-[var(--shadow-glow)]"
+            >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {mode === "signup" ? "Create account" : "Sign in"}
             </Button>
@@ -203,8 +245,8 @@ function LoginPage() {
             Your fleet, <span className="text-gradient">end-to-end.</span>
           </div>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Sign in to inspect dependency graphs, rack capacity, live incidents and
-            every application running in your estate.
+            Sign in to inspect dependency graphs, rack capacity, live incidents and every
+            application running in your estate.
           </p>
           <div className="mt-10 space-y-3">
             {[
@@ -245,7 +287,9 @@ function LoginPage() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-medium">{f.title}</div>
-                  <div className="truncate font-mono text-[11px] text-muted-foreground">{f.detail}</div>
+                  <div className="truncate font-mono text-[11px] text-muted-foreground">
+                    {f.detail}
+                  </div>
                 </div>
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" />
               </motion.div>

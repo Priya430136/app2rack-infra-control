@@ -4,9 +4,28 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
-  TerminalSquare, Upload, FilePlus2, Sparkles, Loader2, Search, AlertTriangle,
-  Copy, FileDown, Printer, Trash2, Send, ShieldAlert, Server, Boxes, Workflow,
-  Clock, TrendingUp, FileText, Zap, CheckCircle2, XCircle,
+  TerminalSquare,
+  Upload,
+  FilePlus2,
+  Sparkles,
+  Loader2,
+  Search,
+  AlertTriangle,
+  Copy,
+  FileDown,
+  Printer,
+  Trash2,
+  Send,
+  ShieldAlert,
+  Server,
+  Boxes,
+  Workflow,
+  Clock,
+  TrendingUp,
+  FileText,
+  Zap,
+  CheckCircle2,
+  XCircle,
 } from "lucide-react";
 import { TopBar } from "@/components/app/topbar";
 import { Card } from "@/components/ui/card";
@@ -18,12 +37,33 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, CartesianGrid,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+  CartesianGrid,
 } from "recharts";
 import {
-  runLogAnalysis, listLogAnalyses, deleteLogAnalysis, chatAboutLogs, type LogAnalysisReport,
+  runLogAnalysis,
+  listLogAnalyses,
+  deleteLogAnalysis,
+  chatAboutLogs,
+  type LogAnalysisReport,
 } from "@/lib/log-analyzer.functions";
 import { exportPDF } from "@/lib/exporters";
 
@@ -79,7 +119,9 @@ function Page() {
   const [search, setSearch] = useState("");
   const [progressStep, setProgressStep] = useState(0);
   const [report, setReport] = useState<LogAnalysisReport | null>(null);
-  const [chatHistory, setChatHistory] = useState<Array<{ role: "user" | "assistant"; content: string }>>([]);
+  const [chatHistory, setChatHistory] = useState<
+    Array<{ role: "user" | "assistant"; content: string }>
+  >([]);
   const [question, setQuestion] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -93,12 +135,24 @@ function Page() {
 
   const analyze = useMutation({
     mutationFn: async () => {
-      const steps = ["Reading logs", "Detecting errors", "Finding root cause", "Comparing historical patterns", "Generating recommendations", "Preparing executive summary"];
+      const steps = [
+        "Reading logs",
+        "Detecting errors",
+        "Finding root cause",
+        "Comparing historical patterns",
+        "Generating recommendations",
+        "Preparing executive summary",
+      ];
       let i = 0;
       setProgressStep(0);
-      const t = setInterval(() => { i = Math.min(i + 1, steps.length - 1); setProgressStep(i); }, 1500);
+      const t = setInterval(() => {
+        i = Math.min(i + 1, steps.length - 1);
+        setProgressStep(i);
+      }, 1500);
       try {
-        const res = await runFn({ data: { logs, title: title || filename || "Log analysis", source, filename } });
+        const res = await runFn({
+          data: { logs, title: title || filename || "Log analysis", source, filename },
+        });
         return res;
       } finally {
         clearInterval(t);
@@ -108,14 +162,19 @@ function Page() {
       setReport(res.report);
       setChatHistory([]);
       qc.invalidateQueries({ queryKey: ["log-analyses"] });
-      toast.success(res.sourceType === "ai" ? "AI analysis complete" : "Analysis complete (offline fallback)");
+      toast.success(
+        res.sourceType === "ai" ? "AI analysis complete" : "Analysis complete (offline fallback)",
+      );
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : "Analysis failed"),
   });
 
   const del = useMutation({
     mutationFn: (id: string) => delFn({ data: { id } }),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["log-analyses"] }); toast.success("Deleted"); },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["log-analyses"] });
+      toast.success("Deleted");
+    },
   });
 
   function handleFile(f: File) {
@@ -191,15 +250,21 @@ function Page() {
     const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = "log-analysis.json"; a.click(); URL.revokeObjectURL(url);
+    a.href = url;
+    a.download = "log-analysis.json";
+    a.click();
+    URL.revokeObjectURL(url);
   }
   function downloadMarkdown() {
     if (!report) return;
-    const md = `# Log Analysis\n\n**Severity:** ${report.severity} · **Confidence:** ${report.confidence}%\n\n## Executive Summary\n${report.executive_summary}\n\n## Root Cause\n${report.probable_root_cause}\n\n## Reasoning\n${report.reasoning}\n\n## Recommendations\n${["immediate","short_term","long_term","preventive"].map((k)=>`### ${k}\n${(report.recommendations as any)[k].map((r:any)=>`- **${r.priority}** ${r.action} _(effort: ${r.effort}, impact: ${r.impact})_`).join("\n")}`).join("\n\n")}\n\n## Executive Report\n${report.executive_report}`;
+    const md = `# Log Analysis\n\n**Severity:** ${report.severity} · **Confidence:** ${report.confidence}%\n\n## Executive Summary\n${report.executive_summary}\n\n## Root Cause\n${report.probable_root_cause}\n\n## Reasoning\n${report.reasoning}\n\n## Recommendations\n${["immediate", "short_term", "long_term", "preventive"].map((k) => `### ${k}\n${(report.recommendations as any)[k].map((r: any) => `- **${r.priority}** ${r.action} _(effort: ${r.effort}, impact: ${r.impact})_`).join("\n")}`).join("\n\n")}\n\n## Executive Report\n${report.executive_report}`;
     const blob = new Blob([md], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = "log-analysis.md"; a.click(); URL.revokeObjectURL(url);
+    a.href = url;
+    a.download = "log-analysis.md";
+    a.click();
+    URL.revokeObjectURL(url);
   }
   function downloadPdf() {
     if (!report) return;
@@ -216,11 +281,21 @@ function Page() {
     });
   }
 
-  const processingSteps = ["Reading logs", "Detecting errors", "Finding root cause", "Comparing historical patterns", "Generating recommendations", "Preparing executive summary"];
+  const processingSteps = [
+    "Reading logs",
+    "Detecting errors",
+    "Finding root cause",
+    "Comparing historical patterns",
+    "Generating recommendations",
+    "Preparing executive summary",
+  ];
 
   return (
     <>
-      <TopBar title="AI Log Analyzer" subtitle="Upload logs — AI detects failures, root cause, impact and remediation" />
+      <TopBar
+        title="AI Log Analyzer"
+        subtitle="Upload logs — AI detects failures, root cause, impact and remediation"
+      />
       <div className="min-w-0 max-w-full space-y-4 overflow-x-hidden p-3 sm:space-y-6 sm:p-6">
         {/* Header card */}
         <Card className="border-border/60 bg-gradient-to-br from-primary/10 via-card/60 to-chart-4/10 p-4 backdrop-blur sm:p-6">
@@ -231,9 +306,10 @@ function Page() {
             <div className="min-w-0 flex-1">
               <h2 className="text-lg font-semibold">AI Log Analyzer</h2>
               <p className="mt-1 max-w-4xl text-sm text-muted-foreground">
-                Upload application, server, kubernetes, docker, nginx, apache, linux, windows or cloud logs. AI will automatically
-                detect failures, summarize errors, determine the probable root cause, identify affected infrastructure,
-                estimate business impact and recommend remediation steps.
+                Upload application, server, kubernetes, docker, nginx, apache, linux, windows or
+                cloud logs. AI will automatically detect failures, summarize errors, determine the
+                probable root cause, identify affected infrastructure, estimate business impact and
+                recommend remediation steps.
               </p>
             </div>
           </div>
@@ -243,39 +319,68 @@ function Page() {
         <Card className="border-border/60 bg-card/60 p-3 backdrop-blur sm:p-5">
           <Tabs value={tab} onValueChange={(v) => setTab(v as never)}>
             <TabsList className="grid w-full max-w-lg grid-cols-3">
-              <TabsTrigger value="paste" className="text-xs sm:text-sm"><FilePlus2 className="mr-1 h-3.5 w-3.5" />Paste</TabsTrigger>
-              <TabsTrigger value="upload" className="text-xs sm:text-sm"><Upload className="mr-1 h-3.5 w-3.5" />Upload</TabsTrigger>
-              <TabsTrigger value="existing" className="text-xs sm:text-sm"><FileText className="mr-1 h-3.5 w-3.5" />Existing</TabsTrigger>
+              <TabsTrigger value="paste" className="text-xs sm:text-sm">
+                <FilePlus2 className="mr-1 h-3.5 w-3.5" />
+                Paste
+              </TabsTrigger>
+              <TabsTrigger value="upload" className="text-xs sm:text-sm">
+                <Upload className="mr-1 h-3.5 w-3.5" />
+                Upload
+              </TabsTrigger>
+              <TabsTrigger value="existing" className="text-xs sm:text-sm">
+                <FileText className="mr-1 h-3.5 w-3.5" />
+                Existing
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="paste" className="mt-4 space-y-2">
               <Textarea
                 value={logs}
-                onChange={(e) => { setLogs(e.target.value); setSource("paste"); setFilename(undefined); }}
+                onChange={(e) => {
+                  setLogs(e.target.value);
+                  setSource("paste");
+                  setFilename(undefined);
+                }}
                 placeholder="Paste logs here… thousands of lines supported."
                 className="min-h-[220px] resize-y font-mono text-xs"
                 maxLength={MAX_SIZE}
               />
-              <p className="text-right text-[11px] text-muted-foreground">{logs.length.toLocaleString()} chars · {lines.length.toLocaleString()} lines · max 25 MB</p>
+              <p className="text-right text-[11px] text-muted-foreground">
+                {logs.length.toLocaleString()} chars · {lines.length.toLocaleString()} lines · max
+                25 MB
+              </p>
             </TabsContent>
 
             <TabsContent value="upload" className="mt-4">
               <div
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files?.[0]; if (f) handleFile(f); }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const f = e.dataTransfer.files?.[0];
+                  if (f) handleFile(f);
+                }}
                 onClick={() => fileRef.current?.click()}
                 className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/60 bg-background/40 p-10 transition hover:border-primary/50 hover:bg-primary/5"
               >
                 <Upload className="h-8 w-8 text-muted-foreground" />
                 <p className="text-sm font-medium">Drop a log file or click to browse</p>
-                <p className="text-xs text-muted-foreground">.log · .txt · .json · .csv · up to 25 MB</p>
-                {filename && <Badge variant="secondary" className="mt-2">{filename}</Badge>}
+                <p className="text-xs text-muted-foreground">
+                  .log · .txt · .json · .csv · up to 25 MB
+                </p>
+                {filename && (
+                  <Badge variant="secondary" className="mt-2">
+                    {filename}
+                  </Badge>
+                )}
                 <input
                   ref={fileRef}
                   type="file"
                   accept=".log,.txt,.json,.csv"
                   className="hidden"
-                  onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) handleFile(f);
+                  }}
                 />
               </div>
             </TabsContent>
@@ -297,14 +402,23 @@ function Page() {
           </Tabs>
 
           <div className="mt-4 flex flex-wrap items-center gap-2 sm:mt-5 sm:gap-3">
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Optional title" className="w-full sm:max-w-xs" />
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Optional title"
+              className="w-full sm:max-w-xs"
+            />
             <Button
               size="lg"
               disabled={!logs.trim() || analyze.isPending}
               onClick={() => analyze.mutate()}
               className="w-full bg-gradient-to-r from-primary to-chart-4 shadow-[var(--shadow-glow)] sm:w-auto"
             >
-              {analyze.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+              {analyze.isPending ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Sparkles className="mr-2 h-4 w-4" />
+              )}
               Analyze with AI
             </Button>
             <p className="text-xs text-muted-foreground">Estimated 5–15 seconds</p>
@@ -316,16 +430,29 @@ function Page() {
           <Card className="border-border/60 bg-card/60 p-3 backdrop-blur sm:p-5">
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <h3 className="text-sm font-semibold">Log Preview</h3>
-              <Badge variant="outline" className="text-[10px]">{lines.length} lines</Badge>
+              <Badge variant="outline" className="text-[10px]">
+                {lines.length} lines
+              </Badge>
               <div className="hidden flex-1 sm:block" />
               <div className="relative flex-1 sm:flex-none">
                 <Search className="absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-                <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search…" className="h-8 w-full pl-7 text-xs sm:w-48" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search…"
+                  className="h-8 w-full pl-7 text-xs sm:w-48"
+                />
               </div>
               <Select value={filter} onValueChange={setFilter}>
-                <SelectTrigger className="h-8 w-32 text-xs"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="h-8 w-32 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {["ALL","CRITICAL","ERROR","WARNING","INFO","DEBUG"].map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                  {["ALL", "CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"].map((s) => (
+                    <SelectItem key={s} value={s}>
+                      {s}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -335,13 +462,21 @@ function Page() {
                   const sev = severityOfLine(l);
                   return (
                     <div key={n} className="flex gap-3">
-                      <span className="w-10 flex-shrink-0 select-none text-right text-muted-foreground/50">{n}</span>
-                      <span className={`whitespace-pre-wrap break-all ${sev ? SEV_COLORS[sev] : "text-foreground/80"}`}>{l || " "}</span>
+                      <span className="w-10 flex-shrink-0 select-none text-right text-muted-foreground/50">
+                        {n}
+                      </span>
+                      <span
+                        className={`whitespace-pre-wrap break-all ${sev ? SEV_COLORS[sev] : "text-foreground/80"}`}
+                      >
+                        {l || " "}
+                      </span>
                     </div>
                   );
                 })}
                 {visibleLines.length > 2000 && (
-                  <p className="mt-2 text-center text-[10px] text-muted-foreground">…{(visibleLines.length - 2000).toLocaleString()} more lines hidden</p>
+                  <p className="mt-2 text-center text-[10px] text-muted-foreground">
+                    …{(visibleLines.length - 2000).toLocaleString()} more lines hidden
+                  </p>
                 )}
               </div>
             </ScrollArea>
@@ -358,14 +493,23 @@ function Page() {
             <div className="space-y-2">
               {processingSteps.map((s, i) => (
                 <div key={s} className="flex items-center gap-2 text-xs">
-                  {i < progressStep ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> :
-                   i === progressStep ? <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" /> :
-                   <div className="h-3.5 w-3.5 rounded-full border border-border/60" />}
-                  <span className={i <= progressStep ? "text-foreground" : "text-muted-foreground"}>{s}</span>
+                  {i < progressStep ? (
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  ) : i === progressStep ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+                  ) : (
+                    <div className="h-3.5 w-3.5 rounded-full border border-border/60" />
+                  )}
+                  <span className={i <= progressStep ? "text-foreground" : "text-muted-foreground"}>
+                    {s}
+                  </span>
                 </div>
               ))}
             </div>
-            <Progress value={((progressStep + 1) / processingSteps.length) * 100} className="mt-4" />
+            <Progress
+              value={((progressStep + 1) / processingSteps.length) * 100}
+              className="mt-4"
+            />
           </Card>
         )}
 
@@ -375,7 +519,9 @@ function Page() {
         {/* Chat */}
         {report && (
           <Card className="border-border/60 bg-card/60 p-3 backdrop-blur sm:p-5">
-            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold"><Sparkles className="h-4 w-4 text-primary" /> Follow-up questions</h3>
+            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+              <Sparkles className="h-4 w-4 text-primary" /> Follow-up questions
+            </h3>
             <ScrollArea className="mb-3 h-56 rounded-md border border-border/40 bg-background/40 p-3">
               {chatHistory.length === 0 && (
                 <div className="space-y-1 text-xs text-muted-foreground">
@@ -388,21 +534,36 @@ function Page() {
                 </div>
               )}
               {chatHistory.map((m, i) => (
-                <div key={i} className={`mb-2 flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[80%] whitespace-pre-wrap rounded-lg px-3 py-2 text-xs ${m.role === "user" ? "bg-primary/20 text-foreground" : "bg-muted/50 text-foreground"}`}>{m.content}</div>
+                <div
+                  key={i}
+                  className={`mb-2 flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[80%] whitespace-pre-wrap rounded-lg px-3 py-2 text-xs ${m.role === "user" ? "bg-primary/20 text-foreground" : "bg-muted/50 text-foreground"}`}
+                  >
+                    {m.content}
+                  </div>
                 </div>
               ))}
-              {chatLoading && <div className="flex items-center gap-2 text-xs text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" /> Thinking…</div>}
+              {chatLoading && (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Loader2 className="h-3 w-3 animate-spin" /> Thinking…
+                </div>
+              )}
             </ScrollArea>
             <div className="flex gap-2">
               <Input
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") askAi(); }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") askAi();
+                }}
                 placeholder="Ask a follow-up question…"
                 className="flex-1"
               />
-              <Button onClick={askAi} disabled={chatLoading || !question.trim()}><Send className="h-4 w-4" /></Button>
+              <Button onClick={askAi} disabled={chatLoading || !question.trim()}>
+                <Send className="h-4 w-4" />
+              </Button>
             </div>
           </Card>
         )}
@@ -412,36 +573,82 @@ function Page() {
           <Card className="border-border/60 bg-card/60 p-4 backdrop-blur">
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="mr-2 text-sm font-semibold">Export</h3>
-              <Button size="sm" variant="outline" onClick={downloadPdf}><FileDown className="mr-1.5 h-3.5 w-3.5" />PDF</Button>
-              <Button size="sm" variant="outline" onClick={downloadMarkdown}><FileDown className="mr-1.5 h-3.5 w-3.5" />Markdown</Button>
-              <Button size="sm" variant="outline" onClick={downloadJson}><FileDown className="mr-1.5 h-3.5 w-3.5" />JSON</Button>
-              <Button size="sm" variant="outline" onClick={copyReport}><Copy className="mr-1.5 h-3.5 w-3.5" />Copy</Button>
-              <Button size="sm" variant="outline" onClick={() => window.print()}><Printer className="mr-1.5 h-3.5 w-3.5" />Print</Button>
+              <Button size="sm" variant="outline" onClick={downloadPdf}>
+                <FileDown className="mr-1.5 h-3.5 w-3.5" />
+                PDF
+              </Button>
+              <Button size="sm" variant="outline" onClick={downloadMarkdown}>
+                <FileDown className="mr-1.5 h-3.5 w-3.5" />
+                Markdown
+              </Button>
+              <Button size="sm" variant="outline" onClick={downloadJson}>
+                <FileDown className="mr-1.5 h-3.5 w-3.5" />
+                JSON
+              </Button>
+              <Button size="sm" variant="outline" onClick={copyReport}>
+                <Copy className="mr-1.5 h-3.5 w-3.5" />
+                Copy
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => window.print()}>
+                <Printer className="mr-1.5 h-3.5 w-3.5" />
+                Print
+              </Button>
             </div>
           </Card>
         )}
 
         {/* History */}
         <Card className="border-border/60 bg-card/60 p-3 backdrop-blur sm:p-5">
-          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold"><Clock className="h-4 w-4" /> Previous Analyses</h3>
+          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+            <Clock className="h-4 w-4" /> Previous Analyses
+          </h3>
           {historyQ.isLoading && <Skeleton className="h-24 w-full" />}
-          {historyQ.data?.length === 0 && <p className="text-xs text-muted-foreground">No prior analyses yet.</p>}
+          {historyQ.data?.length === 0 && (
+            <p className="text-xs text-muted-foreground">No prior analyses yet.</p>
+          )}
           <div className="space-y-2">
             {(historyQ.data ?? []).map((a: any) => (
-              <div key={a.id} className="flex items-center justify-between rounded-md border border-border/40 bg-background/40 p-3">
+              <div
+                key={a.id}
+                className="flex items-center justify-between rounded-md border border-border/40 bg-background/40 p-3"
+              >
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="truncate text-sm font-medium">{a.title}</span>
-                    <Badge className={`text-[10px] ${RISK_TONE[a.severity] ?? ""}`} variant="outline">{a.severity ?? "?"}</Badge>
-                    <Badge variant="secondary" className="text-[10px]">{a.confidence}%</Badge>
-                    <Badge variant="outline" className="text-[10px]">{a.source_type === "ai" ? "AI" : "Fallback"}</Badge>
+                    <Badge
+                      className={`text-[10px] ${RISK_TONE[a.severity] ?? ""}`}
+                      variant="outline"
+                    >
+                      {a.severity ?? "?"}
+                    </Badge>
+                    <Badge variant="secondary" className="text-[10px]">
+                      {a.confidence}%
+                    </Badge>
+                    <Badge variant="outline" className="text-[10px]">
+                      {a.source_type === "ai" ? "AI" : "Fallback"}
+                    </Badge>
                   </div>
-                  <p className="mt-1 truncate text-[11px] text-muted-foreground">{a.summary || a.filename || "—"}</p>
-                  <p className="text-[10px] text-muted-foreground">{new Date(a.created_at).toLocaleString()} · {a.line_count} lines</p>
+                  <p className="mt-1 truncate text-[11px] text-muted-foreground">
+                    {a.summary || a.filename || "—"}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {new Date(a.created_at).toLocaleString()} · {a.line_count} lines
+                  </p>
                 </div>
                 <div className="flex gap-1">
-                  <Button size="sm" variant="ghost" onClick={() => { setReport(a.report as LogAnalysisReport); toast.success("Loaded analysis"); }}>View</Button>
-                  <Button size="sm" variant="ghost" onClick={() => del.mutate(a.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      setReport(a.report as LogAnalysisReport);
+                      toast.success("Loaded analysis");
+                    }}
+                  >
+                    View
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => del.mutate(a.id)}>
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
                 </div>
               </div>
             ))}
@@ -462,19 +669,42 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
         <Card className="border-border/60 bg-card/60 p-4 backdrop-blur sm:p-5">
           <div className="mb-3 flex flex-wrap items-center gap-2">
             <h3 className="text-sm font-semibold">Executive Summary</h3>
-            <Badge className={`${RISK_TONE[report.severity]}`} variant="outline">{report.severity}</Badge>
+            <Badge className={`${RISK_TONE[report.severity]}`} variant="outline">
+              {report.severity}
+            </Badge>
           </div>
           <p className="text-sm leading-relaxed text-foreground/90">{report.executive_summary}</p>
           <div className="mt-4 rounded-md border border-border/40 bg-background/40 p-3">
-            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Probable Root Cause</p>
+            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+              Probable Root Cause
+            </p>
             <p className="mt-1 text-sm font-medium">{report.probable_root_cause}</p>
           </div>
         </Card>
         <Card className="flex items-center justify-center border-border/60 bg-card/60 p-4 backdrop-blur sm:p-5">
           <div className="flex flex-col items-center">
             <svg viewBox="0 0 80 80" className="h-24 w-24 -rotate-90">
-              <circle cx="40" cy="40" r="32" fill="none" stroke="currentColor" strokeWidth="6" className="text-muted/30" />
-              <circle cx="40" cy="40" r="32" fill="none" stroke="url(#g)" strokeWidth="6" strokeDasharray={circ} strokeDashoffset={circ - (circ * conf) / 100} strokeLinecap="round" className="transition-all duration-1000" />
+              <circle
+                cx="40"
+                cy="40"
+                r="32"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="6"
+                className="text-muted/30"
+              />
+              <circle
+                cx="40"
+                cy="40"
+                r="32"
+                fill="none"
+                stroke="url(#g)"
+                strokeWidth="6"
+                strokeDasharray={circ}
+                strokeDashoffset={circ - (circ * conf) / 100}
+                strokeLinecap="round"
+                className="transition-all duration-1000"
+              />
               <defs>
                 <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0%" stopColor="hsl(var(--primary))" />
@@ -491,11 +721,36 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
       {/* Error summary */}
       <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-5">
         {[
-          { l: "Total Errors", v: report.error_summary.total_errors, i: XCircle, c: "text-red-400" },
-          { l: "Warnings", v: report.error_summary.warnings, i: AlertTriangle, c: "text-amber-400" },
-          { l: "Critical", v: report.error_summary.critical_events, i: ShieldAlert, c: "text-red-500" },
-          { l: "Repeated", v: report.error_summary.repeated_errors, i: TrendingUp, c: "text-orange-400" },
-          { l: "Unique Exc.", v: report.error_summary.unique_exceptions, i: Zap, c: "text-sky-400" },
+          {
+            l: "Total Errors",
+            v: report.error_summary.total_errors,
+            i: XCircle,
+            c: "text-red-400",
+          },
+          {
+            l: "Warnings",
+            v: report.error_summary.warnings,
+            i: AlertTriangle,
+            c: "text-amber-400",
+          },
+          {
+            l: "Critical",
+            v: report.error_summary.critical_events,
+            i: ShieldAlert,
+            c: "text-red-500",
+          },
+          {
+            l: "Repeated",
+            v: report.error_summary.repeated_errors,
+            i: TrendingUp,
+            c: "text-orange-400",
+          },
+          {
+            l: "Unique Exc.",
+            v: report.error_summary.unique_exceptions,
+            i: Zap,
+            c: "text-sky-400",
+          },
         ].map((s) => (
           <Card key={s.l} className="border-border/60 bg-card/60 p-4 backdrop-blur">
             <div className="flex items-center justify-between">
@@ -512,7 +767,9 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
       {/* Timeline + Categories */}
       <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
         <Card className="border-border/60 bg-card/60 p-4 backdrop-blur sm:p-5">
-          <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold"><Clock className="h-4 w-4" /> Timeline</h3>
+          <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold">
+            <Clock className="h-4 w-4" /> Timeline
+          </h3>
           <div className="relative space-y-4 border-l border-border/60 pl-6">
             {report.timeline.map((t, i) => (
               <div key={i} className="relative">
@@ -521,7 +778,9 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
                 <p className="text-sm">{t.event}</p>
               </div>
             ))}
-            {report.timeline.length === 0 && <p className="text-xs text-muted-foreground">No timeline events extracted.</p>}
+            {report.timeline.length === 0 && (
+              <p className="text-xs text-muted-foreground">No timeline events extracted.</p>
+            )}
           </div>
         </Card>
         <Card className="border-border/60 bg-card/60 p-4 backdrop-blur sm:p-5">
@@ -532,8 +791,14 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
                 <XAxis dataKey="category" tick={{ fontSize: 10 }} />
                 <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", fontSize: 12 }} />
-                <Bar dataKey="percent" fill="hsl(var(--primary))" radius={[4,4,0,0]} />
+                <Tooltip
+                  contentStyle={{
+                    background: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    fontSize: 12,
+                  }}
+                />
+                <Bar dataKey="percent" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -550,8 +815,20 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
                 <XAxis dataKey="hour" tick={{ fontSize: 10 }} />
                 <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", fontSize: 12 }} />
-                <Line type="monotone" dataKey="count" stroke="hsl(var(--chart-4))" strokeWidth={2} dot={{ r: 3 }} />
+                <Tooltip
+                  contentStyle={{
+                    background: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    fontSize: 12,
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke="hsl(var(--chart-4))"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -561,10 +838,24 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={report.visualizations.severity_breakdown} dataKey="value" nameKey="name" outerRadius={80} label={{ fontSize: 10 }}>
-                  {report.visualizations.severity_breakdown.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+                <Pie
+                  data={report.visualizations.severity_breakdown}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={80}
+                  label={{ fontSize: 10 }}
+                >
+                  {report.visualizations.severity_breakdown.map((_, i) => (
+                    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                  ))}
                 </Pie>
-                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", fontSize: 12 }} />
+                <Tooltip
+                  contentStyle={{
+                    background: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    fontSize: 12,
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -585,11 +876,18 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
           ].map((c) => (
             <div key={c.l} className="rounded-lg border border-border/40 bg-background/40 p-3">
               <div className="mb-2 flex items-center gap-2 text-[11px] uppercase tracking-wider text-muted-foreground">
-                <c.i className="h-3.5 w-3.5" />{c.l}
+                <c.i className="h-3.5 w-3.5" />
+                {c.l}
               </div>
               <div className="flex flex-wrap gap-1">
-                {c.v.length === 0 && <span className="text-[10px] text-muted-foreground">None detected</span>}
-                {c.v.map((n) => <Badge key={n} variant="secondary" className="text-[10px]">{n}</Badge>)}
+                {c.v.length === 0 && (
+                  <span className="text-[10px] text-muted-foreground">None detected</span>
+                )}
+                {c.v.map((n) => (
+                  <Badge key={n} variant="secondary" className="text-[10px]">
+                    {n}
+                  </Badge>
+                ))}
               </div>
             </div>
           ))}
@@ -602,25 +900,43 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
         <Tabs defaultValue="immediate">
           <div className="-mx-1 overflow-x-auto">
             <TabsList className="w-max">
-              <TabsTrigger value="immediate" className="text-xs sm:text-sm">Immediate</TabsTrigger>
-              <TabsTrigger value="short_term" className="text-xs sm:text-sm">Short-term</TabsTrigger>
-              <TabsTrigger value="long_term" className="text-xs sm:text-sm">Long-term</TabsTrigger>
-              <TabsTrigger value="preventive" className="text-xs sm:text-sm">Preventive</TabsTrigger>
+              <TabsTrigger value="immediate" className="text-xs sm:text-sm">
+                Immediate
+              </TabsTrigger>
+              <TabsTrigger value="short_term" className="text-xs sm:text-sm">
+                Short-term
+              </TabsTrigger>
+              <TabsTrigger value="long_term" className="text-xs sm:text-sm">
+                Long-term
+              </TabsTrigger>
+              <TabsTrigger value="preventive" className="text-xs sm:text-sm">
+                Preventive
+              </TabsTrigger>
             </TabsList>
           </div>
-          {(["immediate","short_term","long_term","preventive"] as const).map((k) => (
+          {(["immediate", "short_term", "long_term", "preventive"] as const).map((k) => (
             <TabsContent key={k} value={k} className="mt-3 space-y-2">
               {(report.recommendations[k] ?? []).map((r, i) => (
                 <div key={i} className="rounded-md border border-border/40 bg-background/40 p-3">
                   <div className="mb-1 flex flex-wrap items-center gap-2">
-                    <Badge variant="outline" className="text-[10px]">Priority: {r.priority}</Badge>
-                    <Badge variant="outline" className="text-[10px]">Effort: {r.effort}</Badge>
-                    <Badge variant="outline" className="text-[10px]">Impact: {r.impact}</Badge>
+                    <Badge variant="outline" className="text-[10px]">
+                      Priority: {r.priority}
+                    </Badge>
+                    <Badge variant="outline" className="text-[10px]">
+                      Effort: {r.effort}
+                    </Badge>
+                    <Badge variant="outline" className="text-[10px]">
+                      Impact: {r.impact}
+                    </Badge>
                   </div>
                   <p className="text-sm">{r.action}</p>
                 </div>
               ))}
-              {(report.recommendations[k] ?? []).length === 0 && <p className="text-xs text-muted-foreground">No {k.replace("_", " ")} recommendations.</p>}
+              {(report.recommendations[k] ?? []).length === 0 && (
+                <p className="text-xs text-muted-foreground">
+                  No {k.replace("_", " ")} recommendations.
+                </p>
+              )}
             </TabsContent>
           ))}
         </Tabs>
@@ -629,14 +945,31 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
       {/* Suggested commands + business impact */}
       <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
         <Card className="border-border/60 bg-card/60 p-4 backdrop-blur sm:p-5">
-          <h3 className="mb-3 text-sm font-semibold">Suggested Commands <span className="ml-1 text-[10px] font-normal text-muted-foreground">(suggestions only — review before running)</span></h3>
+          <h3 className="mb-3 text-sm font-semibold">
+            Suggested Commands{" "}
+            <span className="ml-1 text-[10px] font-normal text-muted-foreground">
+              (suggestions only — review before running)
+            </span>
+          </h3>
           <div className="space-y-2">
             {report.suggested_commands.map((c, i) => (
-              <div key={i} className="rounded-md border border-border/40 bg-black/40 p-3 font-mono text-xs">
-                <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">{c.label}</p>
+              <div
+                key={i}
+                className="rounded-md border border-border/40 bg-black/40 p-3 font-mono text-xs"
+              >
+                <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {c.label}
+                </p>
                 <div className="flex items-center justify-between gap-2">
                   <code className="min-w-0 flex-1 break-all text-emerald-300">{c.command}</code>
-                  <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(c.command); toast.success("Copied"); }}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      navigator.clipboard.writeText(c.command);
+                      toast.success("Copied");
+                    }}
+                  >
                     <Copy className="h-3 w-3" />
                   </Button>
                 </div>
@@ -648,7 +981,10 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
           <h3 className="mb-3 text-sm font-semibold">Business Impact</h3>
           <dl className="space-y-2 text-sm">
             {Object.entries(report.business_impact).map(([k, v]) => (
-              <div key={k} className="flex items-center justify-between border-b border-border/40 py-1.5">
+              <div
+                key={k}
+                className="flex items-center justify-between border-b border-border/40 py-1.5"
+              >
                 <dt className="text-xs capitalize text-muted-foreground">{k.replace(/_/g, " ")}</dt>
                 <dd className="font-medium">{String(v)}</dd>
               </div>
@@ -663,12 +999,19 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
           <h3 className="mb-3 text-sm font-semibold">Similar Historical Incidents</h3>
           <div className="space-y-2">
             {report.similar_incidents.map((s, i) => (
-              <div key={i} className="flex items-center justify-between rounded-md border border-border/40 bg-background/40 p-3 text-sm">
+              <div
+                key={i}
+                className="flex items-center justify-between rounded-md border border-border/40 bg-background/40 p-3 text-sm"
+              >
                 <div>
                   <p className="font-medium">{s.title}</p>
-                  <p className="text-[11px] text-muted-foreground">{s.id} · {s.severity}</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    {s.id} · {s.severity}
+                  </p>
                 </div>
-                <Badge variant="outline" className="text-[10px]">{s.similarity}% match</Badge>
+                <Badge variant="outline" className="text-[10px]">
+                  {s.similarity}% match
+                </Badge>
               </div>
             ))}
           </div>
@@ -678,7 +1021,9 @@ function ReportView({ report }: { report: LogAnalysisReport }) {
       {/* Executive report */}
       <Card className="border-border/60 bg-gradient-to-br from-card/60 to-primary/5 p-4 backdrop-blur sm:p-5">
         <h3 className="mb-3 text-sm font-semibold">Executive Report</h3>
-        <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{report.executive_report}</p>
+        <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">
+          {report.executive_report}
+        </p>
       </Card>
     </div>
   );

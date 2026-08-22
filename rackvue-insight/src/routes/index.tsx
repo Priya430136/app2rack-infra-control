@@ -2,27 +2,79 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useInView, animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import {
-  Activity, ArrowRight, ArrowUpRight, Boxes, CheckCircle2, Cpu, Database,
-  Gauge, Github, Layers, LineChart, Linkedin, Lock, Mail, Network, Server,
-  ShieldCheck, Sparkles, Star, Rocket, Building2, Check, Terminal, Twitter, Workflow, Zap, Menu, HelpCircle,
-  Play, Pause, Volume2, VolumeX, Maximize2, RotateCcw, Lock as LockIcon,
-  Brain, Bot, AlertTriangle, TrendingUp, X as XMark,
+  Activity,
+  ArrowRight,
+  ArrowUpRight,
+  Boxes,
+  CheckCircle2,
+  Cpu,
+  Database,
+  Gauge,
+  Github,
+  Layers,
+  LineChart,
+  Linkedin,
+  Lock,
+  Mail,
+  Network,
+  Server,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Rocket,
+  Building2,
+  Check,
+  Terminal,
+  Twitter,
+  Workflow,
+  Zap,
+  Menu,
+  HelpCircle,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Maximize2,
+  RotateCcw,
+  Lock as LockIcon,
+  Brain,
+  Bot,
+  AlertTriangle,
+  TrendingUp,
+  X as XMark,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader, SheetClose } from "@/components/ui/sheet";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+  SheetHeader,
+  SheetClose,
+} from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 const DEMO_VIDEO_SRC = "/videos/app2rack-demo.mp4";
 
 const SEO_TITLE = "App2Rack — Enterprise Infrastructure Intelligence Platform";
-const SEO_DESC = "Trace any application down to the rack unit it runs on. Live health, AI-powered root cause analysis, dependency graphs and incident response — in one console.";
+const SEO_DESC =
+  "Trace any application down to the rack unit it runs on. Live health, AI-powered root cause analysis, dependency graphs and incident response — in one console.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: SEO_TITLE },
       { name: "description", content: SEO_DESC },
-      { name: "keywords", content: "infrastructure monitoring, CMDB, root cause analysis, AI ops, observability, data center management, rack visualization, incident response" },
+      {
+        name: "keywords",
+        content:
+          "infrastructure monitoring, CMDB, root cause analysis, AI ops, observability, data center management, rack visualization, incident response",
+      },
       { property: "og:title", content: SEO_TITLE },
       { property: "og:description", content: SEO_DESC },
       { property: "og:type", content: "website" },
@@ -37,7 +89,17 @@ export const Route = createFileRoute("/")({
 });
 
 /** Animates a numeric value from 0 to `value` once it scrolls into view. */
-function CountUp({ value, decimals = 0, prefix = "", suffix = "" }: { value: number; decimals?: number; prefix?: string; suffix?: string }) {
+function CountUp({
+  value,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+}: {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const [display, setDisplay] = useState(0);
@@ -62,20 +124,75 @@ function CountUp({ value, decimals = 0, prefix = "", suffix = "" }: { value: num
 }
 
 const features = [
-  { icon: Network, t: "Dependency mapping", b: "Trace any outage from app to rack unit in real time.", accent: "var(--chart-1)" },
-  { icon: Activity, t: "Live telemetry", b: "CPU, memory and network streamed across the fleet.", accent: "var(--chart-2)" },
-  { icon: ShieldCheck, t: "Incident response", b: "Severity-graded timelines with full downtime tracking.", accent: "var(--chart-5)" },
-  { icon: Workflow, t: "Rack visualization", b: "U-level diagrams with thermal & power heatmaps.", accent: "var(--chart-3)" },
-  { icon: Database, t: "Multi-DC topology", b: "Failover zones and capacity at a glance.", accent: "var(--chart-4)" },
-  { icon: Gauge, t: "Capacity planning", b: "Forecast rack, power and cloud headroom before it bites.", accent: "var(--chart-1)" },
-  { icon: Boxes, t: "Application catalog", b: "Tag, group and search every app in your estate.", accent: "var(--chart-2)" },
-  { icon: Lock, t: "RBAC & audit", b: "SAML SSO, fine-grained roles, full audit trail by default.", accent: "var(--chart-5)" },
+  {
+    icon: Network,
+    t: "Dependency mapping",
+    b: "Trace any outage from app to rack unit in real time.",
+    accent: "var(--chart-1)",
+  },
+  {
+    icon: Activity,
+    t: "Live telemetry",
+    b: "CPU, memory and network streamed across the fleet.",
+    accent: "var(--chart-2)",
+  },
+  {
+    icon: ShieldCheck,
+    t: "Incident response",
+    b: "Severity-graded timelines with full downtime tracking.",
+    accent: "var(--chart-5)",
+  },
+  {
+    icon: Workflow,
+    t: "Rack visualization",
+    b: "U-level diagrams with thermal & power heatmaps.",
+    accent: "var(--chart-3)",
+  },
+  {
+    icon: Database,
+    t: "Multi-DC topology",
+    b: "Failover zones and capacity at a glance.",
+    accent: "var(--chart-4)",
+  },
+  {
+    icon: Gauge,
+    t: "Capacity planning",
+    b: "Forecast rack, power and cloud headroom before it bites.",
+    accent: "var(--chart-1)",
+  },
+  {
+    icon: Boxes,
+    t: "Application catalog",
+    b: "Tag, group and search every app in your estate.",
+    accent: "var(--chart-2)",
+  },
+  {
+    icon: Lock,
+    t: "RBAC & audit",
+    b: "SAML SSO, fine-grained roles, full audit trail by default.",
+    accent: "var(--chart-5)",
+  },
 ];
 
 const steps = [
-  { n: "01", icon: Terminal, t: "Connect", b: "Stream live metrics or import CSV / XLSX / JSON snapshots in seconds." },
-  { n: "02", icon: Network, t: "Map", b: "App2Rack auto-builds the full Application → Server → Rack → DC graph." },
-  { n: "03", icon: LineChart, t: "Operate", b: "Triage, plan capacity and export executive-ready reports from one place." },
+  {
+    n: "01",
+    icon: Terminal,
+    t: "Connect",
+    b: "Stream live metrics or import CSV / XLSX / JSON snapshots in seconds.",
+  },
+  {
+    n: "02",
+    icon: Network,
+    t: "Map",
+    b: "App2Rack auto-builds the full Application → Server → Rack → DC graph.",
+  },
+  {
+    n: "03",
+    icon: LineChart,
+    t: "Operate",
+    b: "Triage, plan capacity and export executive-ready reports from one place.",
+  },
 ];
 
 // Order matches actual page scroll order (features -> workflow -> architecture
@@ -91,12 +208,54 @@ const NAV_LINKS = [
 ] as const;
 
 const AI_CAPABILITIES = [
-  { icon: Terminal, t: "AI Log Analyzer", b: "Paste raw logs — get root cause, severity and remediation steps in seconds.", metric: "Root cause in <10s", confidence: 94, accent: "var(--chart-1)" },
-  { icon: Brain, t: "Root Cause Analysis", b: "Correlates incidents with live server, rack and dependency telemetry.", metric: "3x faster MTTR", confidence: 91, accent: "var(--chart-4)" },
-  { icon: Gauge, t: "Optimization Advisor", b: "Continuous scoring across cost, performance, security and reliability.", metric: "9-dimension scoring", confidence: 88, accent: "var(--chart-2)" },
-  { icon: AlertTriangle, t: "Incident Detection", b: "Severity-graded alerts before thresholds breach, not after.", metric: "95% detection accuracy", confidence: 95, accent: "var(--chart-5)" },
-  { icon: TrendingUp, t: "Predictive Insights", b: "Forecast rack, power and cloud headroom before it becomes a problem.", metric: "60-day capacity forecast", confidence: 90, accent: "var(--chart-3)" },
-  { icon: Bot, t: "AI Copilot", b: "Ask InfraBot anything — sizing, cost, HA design, live triage — grounded in your real fleet.", metric: "Context-aware answers", confidence: 92, accent: "var(--chart-1)" },
+  {
+    icon: Terminal,
+    t: "AI Log Analyzer",
+    b: "Paste raw logs — get root cause, severity and remediation steps in seconds.",
+    metric: "Root cause in <10s",
+    confidence: 94,
+    accent: "var(--chart-1)",
+  },
+  {
+    icon: Brain,
+    t: "Root Cause Analysis",
+    b: "Correlates incidents with live server, rack and dependency telemetry.",
+    metric: "3x faster MTTR",
+    confidence: 91,
+    accent: "var(--chart-4)",
+  },
+  {
+    icon: Gauge,
+    t: "Optimization Advisor",
+    b: "Continuous scoring across cost, performance, security and reliability.",
+    metric: "9-dimension scoring",
+    confidence: 88,
+    accent: "var(--chart-2)",
+  },
+  {
+    icon: AlertTriangle,
+    t: "Incident Detection",
+    b: "Severity-graded alerts before thresholds breach, not after.",
+    metric: "95% detection accuracy",
+    confidence: 95,
+    accent: "var(--chart-5)",
+  },
+  {
+    icon: TrendingUp,
+    t: "Predictive Insights",
+    b: "Forecast rack, power and cloud headroom before it becomes a problem.",
+    metric: "60-day capacity forecast",
+    confidence: 90,
+    accent: "var(--chart-3)",
+  },
+  {
+    icon: Bot,
+    t: "AI Copilot",
+    b: "Ask InfraBot anything — sizing, cost, HA design, live triage — grounded in your real fleet.",
+    metric: "Context-aware answers",
+    confidence: 92,
+    accent: "var(--chart-1)",
+  },
 ] as const;
 
 const ARCHITECTURE_STEPS = [
@@ -105,17 +264,39 @@ const ARCHITECTURE_STEPS = [
   { icon: Workflow, t: "Racks", b: "U-level placement, capacity and thermal load per rack." },
   { icon: Database, t: "Data Center", b: "Multi-site topology with failover zones at a glance." },
   { icon: Activity, t: "Monitoring", b: "Continuous telemetry streamed across the entire fleet." },
-  { icon: Brain, t: "AI Analysis", b: "Root cause, optimization and predictive models run on live data." },
+  {
+    icon: Brain,
+    t: "AI Analysis",
+    b: "Root cause, optimization and predictive models run on live data.",
+  },
   { icon: Sparkles, t: "Insights", b: "Executive-ready recommendations, reports and alerts." },
 ] as const;
 
 const COMPARISON = [
-  { old: "Manually maintained CMDB spreadsheets", now: "Auto-discovered inventory, always current" },
-  { old: "Siloed dashboards per tool or team", now: "One console for apps, servers, racks and DCs" },
-  { old: "Reactive incident response after impact", now: "AI-predicted issues before they escalate" },
-  { old: "Spreadsheet-driven capacity planning", now: "ML-driven forecasting with 60-day lookahead" },
-  { old: "Static rack diagrams, updated quarterly", now: "Live U-level visualization, updated in real time" },
-  { old: "Alert fatigue from disconnected signals", now: "Severity-graded, correlated root cause in seconds" },
+  {
+    old: "Manually maintained CMDB spreadsheets",
+    now: "Auto-discovered inventory, always current",
+  },
+  {
+    old: "Siloed dashboards per tool or team",
+    now: "One console for apps, servers, racks and DCs",
+  },
+  {
+    old: "Reactive incident response after impact",
+    now: "AI-predicted issues before they escalate",
+  },
+  {
+    old: "Spreadsheet-driven capacity planning",
+    now: "ML-driven forecasting with 60-day lookahead",
+  },
+  {
+    old: "Static rack diagrams, updated quarterly",
+    now: "Live U-level visualization, updated in real time",
+  },
+  {
+    old: "Alert fatigue from disconnected signals",
+    now: "Severity-graded, correlated root cause in seconds",
+  },
 ] as const;
 
 const FAQS = [
@@ -147,35 +328,86 @@ const FAQS = [
 
 const plans = [
   {
-    code: "free", name: "Free", icon: Star, price: "$0", period: "forever",
+    code: "free",
+    name: "Free",
+    icon: Star,
+    price: "$0",
+    period: "forever",
     tagline: "Kick the tires on a single stack.",
     credits: "20 AI credits / month",
-    features: ["Up to 10 servers", "Up to 3 racks", "Up to 5 applications", "Dashboard & AI chat", "Basic reports", "Community support"],
-    cta: "Get started", highlight: false, badge: null as string | null,
+    features: [
+      "Up to 10 servers",
+      "Up to 3 racks",
+      "Up to 5 applications",
+      "Dashboard & AI chat",
+      "Basic reports",
+      "Community support",
+    ],
+    cta: "Get started",
+    highlight: false,
+    badge: null as string | null,
   },
   {
-    code: "pro", name: "Pro", icon: Rocket, price: "$19", period: "/mo",
+    code: "pro",
+    name: "Pro",
+    icon: Rocket,
+    price: "$19",
+    period: "/mo",
     tagline: "For serious operators running production.",
     credits: "1,000 AI credits / month",
-    features: ["Unlimited servers, racks & apps", "AI Log Analyzer & RCA", "Optimization Advisor", "AI reports & PDF export", "Email notifications", "Priority support"],
-    cta: "Start Pro", highlight: true, badge: "Most Popular",
+    features: [
+      "Unlimited servers, racks & apps",
+      "AI Log Analyzer & RCA",
+      "Optimization Advisor",
+      "AI reports & PDF export",
+      "Email notifications",
+      "Priority support",
+    ],
+    cta: "Start Pro",
+    highlight: true,
+    badge: "Most Popular",
   },
   {
-    code: "business", name: "Business", icon: Building2, price: "$79", period: "/mo",
+    code: "business",
+    name: "Business",
+    icon: Building2,
+    price: "$79",
+    period: "/mo",
     tagline: "Multi-team workspaces with governance.",
     credits: "5,000 AI credits / month",
-    features: ["Multi-team workspaces", "RBAC & audit logs", "API access & webhooks", "Advanced analytics", "Custom dashboards", "Unlimited AI chat"],
-    cta: "Upgrade", highlight: false, badge: "Best for Teams",
+    features: [
+      "Multi-team workspaces",
+      "RBAC & audit logs",
+      "API access & webhooks",
+      "Advanced analytics",
+      "Custom dashboards",
+      "Unlimited AI chat",
+    ],
+    cta: "Upgrade",
+    highlight: false,
+    badge: "Best for Teams",
   },
   {
-    code: "enterprise", name: "Enterprise", icon: Sparkles, price: "Custom", period: "",
+    code: "enterprise",
+    name: "Enterprise",
+    icon: Sparkles,
+    price: "Custom",
+    period: "",
     tagline: "Dedicated infra, SSO, SLA and CSM.",
     credits: "Unlimited AI credits",
-    features: ["Unlimited everything", "Dedicated AI models", "SSO & white-label", "Dedicated infrastructure", "SLA & dedicated CSM", "On-prem deployment"],
-    cta: "Contact Sales", highlight: false, badge: null,
+    features: [
+      "Unlimited everything",
+      "Dedicated AI models",
+      "SSO & white-label",
+      "Dedicated infrastructure",
+      "SLA & dedicated CSM",
+      "On-prem deployment",
+    ],
+    cta: "Contact Sales",
+    highlight: false,
+    badge: null,
   },
 ];
-
 
 function Landing() {
   const [scrolled, setScrolled] = useState(false);
@@ -237,7 +469,9 @@ function Landing() {
             : "border-b border-border/30 bg-background/60 backdrop-blur-xl"
         }`}
       >
-        <div className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-300 ${scrolled ? "py-3" : "py-4"}`}>
+        <div
+          className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-300 ${scrolled ? "py-3" : "py-4"}`}
+        >
           <Link to="/" className="flex items-center gap-2.5">
             <div className="relative grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-primary via-chart-4 to-chart-5 shadow-[var(--shadow-glow)]">
               <Activity className="h-4 w-4 text-primary-foreground" strokeWidth={2.5} />
@@ -245,7 +479,9 @@ function Landing() {
             </div>
             <div className="leading-tight">
               <div className="text-sm font-semibold tracking-tight">App2Rack</div>
-              <div className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground">Infra Control</div>
+              <div className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
+                Infra Control
+              </div>
             </div>
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
@@ -275,8 +511,17 @@ function Landing() {
             })}
           </nav>
           <div className="flex items-center gap-2">
-            <Link to="/login" className="hidden rounded-md px-3 py-1.5 text-sm text-muted-foreground transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:inline">Sign in</Link>
-            <Button asChild size="sm" className="hidden bg-gradient-to-r from-primary to-chart-4 text-primary-foreground shadow-[var(--shadow-glow)] sm:inline-flex">
+            <Link
+              to="/login"
+              className="hidden rounded-md px-3 py-1.5 text-sm text-muted-foreground transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:inline"
+            >
+              Sign in
+            </Link>
+            <Button
+              asChild
+              size="sm"
+              className="hidden bg-gradient-to-r from-primary to-chart-4 text-primary-foreground shadow-[var(--shadow-glow)] sm:inline-flex"
+            >
               <Link to="/login" search={{ mode: "signup" }}>
                 Get started <ArrowRight className="ml-1 h-3.5 w-3.5" />
               </Link>
@@ -293,7 +538,10 @@ function Landing() {
                   <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[85vw] max-w-sm border-l border-border/60 bg-background/95 backdrop-blur-2xl">
+              <SheetContent
+                side="right"
+                className="w-[85vw] max-w-sm border-l border-border/60 bg-background/95 backdrop-blur-2xl"
+              >
                 <SheetHeader className="text-left">
                   <SheetTitle className="flex items-center gap-2.5">
                     <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-primary via-chart-4 to-chart-5 shadow-[var(--shadow-glow)]">
@@ -310,7 +558,9 @@ function Landing() {
                         <a
                           href={i.href}
                           className={`flex items-center justify-between rounded-lg px-3 py-3 text-base transition ${
-                            active ? "bg-card/70 text-foreground" : "text-muted-foreground hover:bg-card/50 hover:text-foreground"
+                            active
+                              ? "bg-card/70 text-foreground"
+                              : "text-muted-foreground hover:bg-card/50 hover:text-foreground"
                           }`}
                         >
                           {i.l}
@@ -327,7 +577,10 @@ function Landing() {
                     </Button>
                   </SheetClose>
                   <SheetClose asChild>
-                    <Button asChild className="w-full bg-gradient-to-r from-primary to-chart-4 text-primary-foreground shadow-[var(--shadow-glow)]">
+                    <Button
+                      asChild
+                      className="w-full bg-gradient-to-r from-primary to-chart-4 text-primary-foreground shadow-[var(--shadow-glow)]"
+                    >
                       <Link to="/login" search={{ mode: "signup" }}>
                         Get started <ArrowRight className="ml-1.5 h-4 w-4" />
                       </Link>
@@ -371,8 +624,8 @@ function Landing() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="mx-auto mt-7 max-w-2xl text-center text-lg leading-relaxed text-muted-foreground"
         >
-          The operations console for modern infrastructure teams. Live health,
-          dependency graphs, incident response — without switching tabs.
+          The operations console for modern infrastructure teams. Live health, dependency graphs,
+          incident response — without switching tabs.
         </motion.p>
 
         <motion.div
@@ -381,12 +634,21 @@ function Landing() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="mt-10 flex flex-wrap items-center justify-center gap-3"
         >
-          <Button asChild size="lg" className="h-12 bg-gradient-to-r from-primary to-chart-4 px-6 text-base text-primary-foreground shadow-[var(--shadow-glow)]">
+          <Button
+            asChild
+            size="lg"
+            className="h-12 bg-gradient-to-r from-primary to-chart-4 px-6 text-base text-primary-foreground shadow-[var(--shadow-glow)]"
+          >
             <Link to="/login" search={{ mode: "signup" }}>
               Launch console <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
-          <Button size="lg" variant="outline" onClick={() => setDemoOpen(true)} className="h-12 border-border/60 bg-card/40 px-6 text-base backdrop-blur">
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => setDemoOpen(true)}
+            className="h-12 border-border/60 bg-card/40 px-6 text-base backdrop-blur"
+          >
             Live demo
           </Button>
         </motion.div>
@@ -419,7 +681,9 @@ function Landing() {
                 <span className="h-2.5 w-2.5 rounded-full bg-warning/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
               </div>
-              <div className="font-mono text-[10px] text-muted-foreground">app2rack · console · prod</div>
+              <div className="font-mono text-[10px] text-muted-foreground">
+                app2rack · console · prod
+              </div>
               <span className="flex items-center gap-1.5 text-[10px] text-success">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" />
                 live
@@ -428,8 +692,12 @@ function Landing() {
             <div className="grid gap-0 md:grid-cols-[1.4fr_1fr]">
               <div className="border-b border-border/40 p-6 md:border-b-0 md:border-r">
                 <div className="mb-4 flex items-center justify-between">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Live topology</div>
-                  <span className="font-mono text-[10px] text-muted-foreground">trace · 8f3c…a91</span>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                    Live topology
+                  </div>
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    trace · 8f3c…a91
+                  </span>
                 </div>
                 <div className="relative space-y-2.5">
                   <div className="pointer-events-none absolute bottom-3 left-[22px] top-3 w-px overflow-hidden">
@@ -440,11 +708,41 @@ function Landing() {
                     />
                   </div>
                   {[
-                    { icon: Boxes, label: "Application", sub: "checkout-api", color: "var(--chart-1)", latency: "12ms" },
-                    { icon: Server, label: "Server", sub: "srv-prod-08", color: "var(--chart-4)", latency: "4ms" },
-                    { icon: Cpu, label: "VM / Container", sub: "k8s-pod-3a", color: "var(--chart-2)", latency: "2ms" },
-                    { icon: Workflow, label: "Rack", sub: "R-204 · U12", color: "var(--chart-3)", latency: "—" },
-                    { icon: Database, label: "Data Center", sub: "DC-AMS-1", color: "var(--chart-5)", latency: "—" },
+                    {
+                      icon: Boxes,
+                      label: "Application",
+                      sub: "checkout-api",
+                      color: "var(--chart-1)",
+                      latency: "12ms",
+                    },
+                    {
+                      icon: Server,
+                      label: "Server",
+                      sub: "srv-prod-08",
+                      color: "var(--chart-4)",
+                      latency: "4ms",
+                    },
+                    {
+                      icon: Cpu,
+                      label: "VM / Container",
+                      sub: "k8s-pod-3a",
+                      color: "var(--chart-2)",
+                      latency: "2ms",
+                    },
+                    {
+                      icon: Workflow,
+                      label: "Rack",
+                      sub: "R-204 · U12",
+                      color: "var(--chart-3)",
+                      latency: "—",
+                    },
+                    {
+                      icon: Database,
+                      label: "Data Center",
+                      sub: "DC-AMS-1",
+                      color: "var(--chart-5)",
+                      latency: "—",
+                    },
                   ].map((n, i) => (
                     <motion.div
                       key={n.label}
@@ -455,7 +753,10 @@ function Landing() {
                     >
                       <div
                         className="grid h-9 w-9 place-items-center rounded-md"
-                        style={{ background: `color-mix(in oklab, ${n.color} 18%, transparent)`, border: `1px solid color-mix(in oklab, ${n.color} 40%, transparent)` }}
+                        style={{
+                          background: `color-mix(in oklab, ${n.color} 18%, transparent)`,
+                          border: `1px solid color-mix(in oklab, ${n.color} 40%, transparent)`,
+                        }}
                       >
                         <n.icon className="h-4 w-4" style={{ color: n.color }} />
                       </div>
@@ -463,13 +764,17 @@ function Landing() {
                         <div className="text-sm font-medium">{n.label}</div>
                         <div className="font-mono text-[10px] text-muted-foreground">{n.sub}</div>
                       </div>
-                      <span className="font-mono text-[10px] text-muted-foreground">{n.latency}</span>
+                      <span className="font-mono text-[10px] text-muted-foreground">
+                        {n.latency}
+                      </span>
                     </motion.div>
                   ))}
                 </div>
               </div>
               <div className="p-6">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Fleet pulse</div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                  Fleet pulse
+                </div>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {[
                     { l: "CPU", value: 38, suffix: "%", c: "var(--chart-1)" },
@@ -478,7 +783,9 @@ function Landing() {
                     { l: "Power", value: 74, suffix: "kW", c: "var(--chart-5)" },
                   ].map((m) => (
                     <div key={m.l} className="rounded-lg border border-border/40 bg-card/40 p-3">
-                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{m.l}</div>
+                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                        {m.l}
+                      </div>
                       <div className="mt-1 font-mono text-lg font-semibold" style={{ color: m.c }}>
                         <CountUp value={m.value} decimals={m.decimals} suffix={m.suffix} />
                       </div>
@@ -492,11 +799,15 @@ function Landing() {
                     </div>
                     <div className="text-xs font-medium text-success">Auto-remediated</div>
                   </div>
-                  <div className="mt-2 font-mono text-[10px] text-muted-foreground">rack R-204 · cooling balanced · 1.8s ago</div>
+                  <div className="mt-2 font-mono text-[10px] text-muted-foreground">
+                    rack R-204 · cooling balanced · 1.8s ago
+                  </div>
                 </div>
                 <div className="mt-3 rounded-lg border border-border/40 bg-card/40 p-4">
                   <div className="flex items-center justify-between">
-                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Uptime · 30d</div>
+                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Uptime · 30d
+                    </div>
                     <span className="font-mono text-xs text-success">99.98%</span>
                   </div>
                   <div className="mt-2 flex h-6 items-end gap-[2px]">
@@ -506,7 +817,10 @@ function Landing() {
                         className="flex-1 rounded-sm"
                         style={{
                           height: `${60 + Math.sin(i * 0.7) * 35 + Math.cos(i * 0.3) * 5}%`,
-                          background: i === 22 ? "var(--warning)" : "color-mix(in oklab, var(--success) 70%, transparent)",
+                          background:
+                            i === 22
+                              ? "var(--warning)"
+                              : "color-mix(in oklab, var(--success) 70%, transparent)",
                         }}
                       />
                     ))}
@@ -525,8 +839,20 @@ function Landing() {
           <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
             <div className="flex w-max animate-[marquee_30s_linear_infinite] gap-14 whitespace-nowrap">
               {[...Array(2)].flatMap((_, j) =>
-                ["NEXTGRID", "HELIX CLOUD", "ORBIT.IO", "NORTHWIND", "BLACKBOX", "VANTA OPS", "STRATA DC", "ARC LABS"].map((n, i) => (
-                  <div key={`${j}-${i}`} className="font-[Space_Grotesk] text-xl font-semibold tracking-[0.2em] text-muted-foreground/50">
+                [
+                  "NEXTGRID",
+                  "HELIX CLOUD",
+                  "ORBIT.IO",
+                  "NORTHWIND",
+                  "BLACKBOX",
+                  "VANTA OPS",
+                  "STRATA DC",
+                  "ARC LABS",
+                ].map((n, i) => (
+                  <div
+                    key={`${j}-${i}`}
+                    className="font-[Space_Grotesk] text-xl font-semibold tracking-[0.2em] text-muted-foreground/50"
+                  >
                     {n}
                   </div>
                 )),
@@ -539,7 +865,9 @@ function Landing() {
       {/* FEATURES */}
       <section id="features" className="relative mx-auto max-w-7xl scroll-mt-24 px-6 pb-32">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">Platform</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+            Platform
+          </div>
           <h2 className="mt-4 font-[Space_Grotesk] text-4xl font-semibold tracking-tight md:text-5xl">
             Everything ops needs, <span className="text-gradient">in one console.</span>
           </h2>
@@ -582,7 +910,9 @@ function Landing() {
       {/* WORKFLOW */}
       <section id="workflow" className="relative mx-auto max-w-7xl scroll-mt-24 px-6 pb-32">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">Workflow</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+            Workflow
+          </div>
           <h2 className="mt-4 font-[Space_Grotesk] text-4xl font-semibold tracking-tight md:text-5xl">
             Three steps to <span className="text-gradient">operational clarity.</span>
           </h2>
@@ -602,7 +932,9 @@ function Landing() {
                 <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-primary/25 to-chart-4/10 ring-1 ring-primary/30">
                   <s.icon className="h-5 w-5 text-primary" />
                 </div>
-                <div className="font-[Space_Grotesk] text-4xl font-semibold text-muted-foreground/20">{s.n}</div>
+                <div className="font-[Space_Grotesk] text-4xl font-semibold text-muted-foreground/20">
+                  {s.n}
+                </div>
               </div>
               <div className="mt-6 font-[Space_Grotesk] text-xl font-semibold">{s.t}</div>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.b}</p>
@@ -614,7 +946,9 @@ function Landing() {
       {/* PLATFORM ARCHITECTURE */}
       <section id="architecture" className="relative mx-auto max-w-5xl scroll-mt-24 px-6 pb-32">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">Architecture</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+            Architecture
+          </div>
           <h2 className="mt-4 font-[Space_Grotesk] text-4xl font-semibold tracking-tight md:text-5xl">
             From code to insight, <span className="text-gradient">one continuous graph.</span>
           </h2>
@@ -654,7 +988,9 @@ function Landing() {
                 className="flex-1 rounded-xl border border-border/60 bg-card/40 px-5 py-4 backdrop-blur"
               >
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-[10px] text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <h3 className="font-[Space_Grotesk] text-base font-semibold">{s.t}</h3>
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">{s.b}</p>
@@ -667,16 +1003,30 @@ function Landing() {
       {/* PROOF / TESTIMONIALS */}
       <section id="proof" className="relative mx-auto max-w-7xl scroll-mt-24 px-6 pb-32">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">Customers</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+            Customers
+          </div>
           <h2 className="mt-4 font-[Space_Grotesk] text-4xl font-semibold tracking-tight md:text-5xl">
             Trusted by teams who <span className="text-gradient">cannot afford downtime.</span>
           </h2>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { q: "We cut incident triage from 40 minutes to under 3. The rack-level trace is the killer feature.", a: "Priya N.", r: "VP Infrastructure, NextGrid" },
-            { q: "Finally a CMDB that updates itself. Our auditors stopped asking for spreadsheets.", a: "Marcus L.", r: "Head of SRE, Helix Cloud" },
-            { q: "Capacity planning that actually predicts. We deferred a $1.2M rack expansion by two quarters.", a: "Aisha K.", r: "Director DC Ops, Northwind" },
+            {
+              q: "We cut incident triage from 40 minutes to under 3. The rack-level trace is the killer feature.",
+              a: "Priya N.",
+              r: "VP Infrastructure, NextGrid",
+            },
+            {
+              q: "Finally a CMDB that updates itself. Our auditors stopped asking for spreadsheets.",
+              a: "Marcus L.",
+              r: "Head of SRE, Helix Cloud",
+            },
+            {
+              q: "Capacity planning that actually predicts. We deferred a $1.2M rack expansion by two quarters.",
+              a: "Aisha K.",
+              r: "Director DC Ops, Northwind",
+            },
           ].map((t, i) => (
             <motion.div
               key={t.a}
@@ -690,7 +1040,10 @@ function Landing() {
               <p className="mt-5 text-[15px] leading-relaxed text-foreground/90">"{t.q}"</p>
               <div className="mt-6 flex items-center gap-3 border-t border-border/40 pt-5">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-primary/40 to-chart-4/30 text-xs font-semibold ring-1 ring-primary/30">
-                  {t.a.split(" ").map((p) => p[0]).join("")}
+                  {t.a
+                    .split(" ")
+                    .map((p) => p[0])
+                    .join("")}
                 </div>
                 <div>
                   <div className="text-sm font-medium">{t.a}</div>
@@ -726,7 +1079,9 @@ function Landing() {
                 <div className="font-[Space_Grotesk] text-5xl font-semibold text-gradient md:text-6xl">
                   <CountUp value={s.value} decimals={s.decimals} suffix={s.suffix} />
                 </div>
-                <div className="mt-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">{s.v}</div>
+                <div className="mt-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  {s.v}
+                </div>
               </div>
             ))}
           </div>
@@ -736,12 +1091,15 @@ function Landing() {
       {/* AI SHOWCASE */}
       <section id="ai" className="relative mx-auto max-w-7xl scroll-mt-24 px-6 pb-32">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">AI-Native</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+            AI-Native
+          </div>
           <h2 className="mt-4 font-[Space_Grotesk] text-4xl font-semibold tracking-tight md:text-5xl">
             Infrastructure intelligence, <span className="text-gradient">built in.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">
-            Every plan ships with AI grounded in your real fleet data — not generic chat, not canned answers.
+            Every plan ships with AI grounded in your real fleet data — not generic chat, not canned
+            answers.
           </p>
         </div>
 
@@ -787,7 +1145,9 @@ function Landing() {
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 1, delay: 0.15 + (i % 3) * 0.08, ease: "easeOut" }}
                     className="h-full rounded-full"
-                    style={{ background: `linear-gradient(90deg, ${a.accent}, oklch(0.65 0.2 290))` }}
+                    style={{
+                      background: `linear-gradient(90deg, ${a.accent}, oklch(0.65 0.2 290))`,
+                    }}
                   />
                 </div>
               </div>
@@ -799,7 +1159,9 @@ function Landing() {
       {/* WHY APP2RACK */}
       <section id="why" className="relative mx-auto max-w-6xl scroll-mt-24 px-6 pb-32">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">Why App2Rack</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+            Why App2Rack
+          </div>
           <h2 className="mt-4 font-[Space_Grotesk] text-4xl font-semibold tracking-tight md:text-5xl">
             Stop stitching tools <span className="text-gradient">together.</span>
           </h2>
@@ -812,7 +1174,9 @@ function Landing() {
             viewport={{ once: true, margin: "-50px" }}
             className="rounded-2xl border border-border/50 bg-card/20 p-7 backdrop-blur"
           >
-            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Traditional monitoring</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Traditional monitoring
+            </div>
             <ul className="mt-6 space-y-4">
               {COMPARISON.map((c) => (
                 <li key={c.old} className="flex items-start gap-3 text-sm text-muted-foreground/80">
@@ -830,7 +1194,9 @@ function Landing() {
             className="relative overflow-hidden rounded-2xl border border-primary/50 bg-card/50 p-7 shadow-[var(--shadow-glow)] backdrop-blur"
           >
             <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[radial-gradient(closest-side,oklch(0.78_0.15_200/0.25),transparent)]" />
-            <div className="relative text-xs font-semibold uppercase tracking-[0.2em] text-primary">App2Rack</div>
+            <div className="relative text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              App2Rack
+            </div>
             <ul className="relative mt-6 space-y-4">
               {COMPARISON.map((c, i) => (
                 <motion.li
@@ -853,12 +1219,15 @@ function Landing() {
       {/* PRICING */}
       <section id="pricing" className="relative mx-auto max-w-7xl scroll-mt-24 px-6 pb-32">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">Pricing</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+            Pricing
+          </div>
           <h2 className="mt-4 font-[Space_Grotesk] text-4xl font-semibold tracking-tight md:text-5xl">
             Simple, scalable <span className="text-gradient">pricing.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">
-            Start free, upgrade when your fleet does. Every plan includes AI credits for log analysis, RCA and optimization.
+            Start free, upgrade when your fleet does. Every plan includes AI credits for log
+            analysis, RCA and optimization.
           </p>
         </div>
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -870,13 +1239,19 @@ function Landing() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: i * 0.06 }}
               className={`relative overflow-hidden rounded-2xl border bg-card/40 p-6 backdrop-blur transition-all duration-300 hover:-translate-y-1 ${
-                p.highlight ? "border-primary/60 shadow-[var(--shadow-glow)]" : "border-border/60 hover:border-primary/40"
+                p.highlight
+                  ? "border-primary/60 shadow-[var(--shadow-glow)]"
+                  : "border-border/60 hover:border-primary/40"
               }`}
             >
               {p.badge && (
-                <div className={`absolute right-0 top-0 rounded-bl-lg px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground ${
-                  p.highlight ? "bg-gradient-to-r from-primary to-chart-4" : "bg-gradient-to-r from-warning to-primary"
-                }`}>
+                <div
+                  className={`absolute right-0 top-0 rounded-bl-lg px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground ${
+                    p.highlight
+                      ? "bg-gradient-to-r from-primary to-chart-4"
+                      : "bg-gradient-to-r from-warning to-primary"
+                  }`}
+                >
                   {p.badge}
                 </div>
               )}
@@ -910,9 +1285,14 @@ function Landing() {
                 {p.code === "enterprise" ? (
                   <a href="mailto:sales@app2rack.io?subject=Enterprise%20plan%20inquiry">{p.cta}</a>
                 ) : p.code === "free" ? (
-                  <Link to="/login" search={{ mode: "signup", redirect: "/dashboard" }}>{p.cta}</Link>
+                  <Link to="/login" search={{ mode: "signup", redirect: "/dashboard" }}>
+                    {p.cta}
+                  </Link>
                 ) : (
-                  <Link to="/billing/pricing" search={{ checkout: p.code as "pro" | "business", cycle: "monthly" }}>
+                  <Link
+                    to="/billing/pricing"
+                    search={{ checkout: p.code as "pro" | "business", cycle: "monthly" }}
+                  >
                     {p.cta}
                   </Link>
                 )}
@@ -928,12 +1308,21 @@ function Landing() {
       {/* FAQ */}
       <section id="faq" className="relative mx-auto max-w-4xl scroll-mt-24 px-6 pb-32">
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">FAQ</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+            FAQ
+          </div>
           <h2 className="mt-4 font-[Space_Grotesk] text-4xl font-semibold tracking-tight md:text-5xl">
             Answers before you <span className="text-gradient">even ask.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">
-            Still curious? Reach the team at <a className="text-foreground underline-offset-4 hover:underline" href="mailto:hello@app2rack.io">hello@app2rack.io</a>.
+            Still curious? Reach the team at{" "}
+            <a
+              className="text-foreground underline-offset-4 hover:underline"
+              href="mailto:hello@app2rack.io"
+            >
+              hello@app2rack.io
+            </a>
+            .
           </p>
         </div>
         <motion.div
@@ -945,7 +1334,11 @@ function Landing() {
         >
           <Accordion type="single" collapsible className="w-full">
             {FAQS.map((f, i) => (
-              <AccordionItem key={f.q} value={`faq-${i}`} className="border-border/40 px-4 last:border-b-0">
+              <AccordionItem
+                key={f.q}
+                value={`faq-${i}`}
+                className="border-border/40 px-4 last:border-b-0"
+              >
                 <AccordionTrigger className="py-5 text-left text-[15px] font-medium hover:no-underline data-[state=open]:text-primary">
                   <span className="flex items-center gap-3">
                     <HelpCircle className="h-4 w-4 shrink-0 text-primary/70" />
@@ -975,15 +1368,25 @@ function Landing() {
             Step inside the <span className="text-gradient">operations console.</span>
           </h3>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Every application, server and rack unit in one place. Set up in minutes — no agents, no contracts.
+            Every application, server and rack unit in one place. Set up in minutes — no agents, no
+            contracts.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Button asChild size="lg" className="h-12 bg-gradient-to-r from-primary to-chart-4 px-6 text-base text-primary-foreground shadow-[var(--shadow-glow)]">
+            <Button
+              asChild
+              size="lg"
+              className="h-12 bg-gradient-to-r from-primary to-chart-4 px-6 text-base text-primary-foreground shadow-[var(--shadow-glow)]"
+            >
               <Link to="/login" search={{ mode: "signup" }}>
                 Get started free <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" onClick={() => setDemoOpen(true)} className="h-12 border-border/60 bg-card/40 px-6 text-base backdrop-blur">
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => setDemoOpen(true)}
+              className="h-12 border-border/60 bg-card/40 px-6 text-base backdrop-blur"
+            >
               Live demo
             </Button>
           </div>
@@ -1002,46 +1405,80 @@ function Landing() {
                 <div className="text-sm font-semibold tracking-tight">App2Rack</div>
               </div>
               <p className="mt-4 max-w-xs text-xs leading-relaxed text-muted-foreground">
-                The operations console for modern infrastructure teams. From code to rack, end-to-end.
+                The operations console for modern infrastructure teams. From code to rack,
+                end-to-end.
               </p>
               <div className="mt-5 flex items-center gap-3 text-muted-foreground">
-                <a aria-label="GitHub" href="#" className="transition hover:text-foreground"><Github className="h-4 w-4" /></a>
-                <a aria-label="Twitter" href="#" className="transition hover:text-foreground"><Twitter className="h-4 w-4" /></a>
-                <a aria-label="LinkedIn" href="#" className="transition hover:text-foreground"><Linkedin className="h-4 w-4" /></a>
-                <a aria-label="Email" href="mailto:hello@app2rack.io" className="transition hover:text-foreground"><Mail className="h-4 w-4" /></a>
+                <a aria-label="GitHub" href="#" className="transition hover:text-foreground">
+                  <Github className="h-4 w-4" />
+                </a>
+                <a aria-label="Twitter" href="#" className="transition hover:text-foreground">
+                  <Twitter className="h-4 w-4" />
+                </a>
+                <a aria-label="LinkedIn" href="#" className="transition hover:text-foreground">
+                  <Linkedin className="h-4 w-4" />
+                </a>
+                <a
+                  aria-label="Email"
+                  href="mailto:hello@app2rack.io"
+                  className="transition hover:text-foreground"
+                >
+                  <Mail className="h-4 w-4" />
+                </a>
               </div>
             </div>
 
             {[
-              { h: "Product", items: [
-                { l: "Features", href: "#features", external: true },
-                { l: "Workflow", href: "#workflow", external: true },
-                { l: "Pricing", href: "#pricing", external: true },
-                { l: "FAQ", href: "#faq", external: true },
-                { l: "Changelog", to: "/login" as const },
-              ]},
-              { h: "Company", items: [
-                { l: "About", href: "#", external: true },
-                { l: "Customers", href: "#proof", external: true },
-                { l: "Careers", href: "#", external: true },
-                { l: "Contact", href: "#", external: true },
-              ]},
-              { h: "Resources", items: [
-                { l: "Documentation", href: "#", external: true },
-                { l: "API Reference", href: "#", external: true },
-                { l: "Status", href: "#", external: true },
-                { l: "Security", href: "#", external: true },
-              ]},
+              {
+                h: "Product",
+                items: [
+                  { l: "Features", href: "#features", external: true },
+                  { l: "Workflow", href: "#workflow", external: true },
+                  { l: "Pricing", href: "#pricing", external: true },
+                  { l: "FAQ", href: "#faq", external: true },
+                  { l: "Changelog", to: "/login" as const },
+                ],
+              },
+              {
+                h: "Company",
+                items: [
+                  { l: "About", href: "#", external: true },
+                  { l: "Customers", href: "#proof", external: true },
+                  { l: "Careers", href: "#", external: true },
+                  { l: "Contact", href: "#", external: true },
+                ],
+              },
+              {
+                h: "Resources",
+                items: [
+                  { l: "Documentation", href: "#", external: true },
+                  { l: "API Reference", href: "#", external: true },
+                  { l: "Status", href: "#", external: true },
+                  { l: "Security", href: "#", external: true },
+                ],
+              },
             ].map((col) => (
               <div key={col.h}>
-                <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{col.h}</div>
+                <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                  {col.h}
+                </div>
                 <ul className="mt-4 space-y-2.5 text-sm">
                   {col.items.map((it) => (
                     <li key={it.l}>
                       {"to" in it ? (
-                        <Link to={it.to as "/login"} className="text-muted-foreground transition hover:text-foreground">{it.l}</Link>
+                        <Link
+                          to={it.to as "/login"}
+                          className="text-muted-foreground transition hover:text-foreground"
+                        >
+                          {it.l}
+                        </Link>
                       ) : (
-                        <a href={it.href} className="text-muted-foreground transition hover:text-foreground">{it.l}</a>
+                        <a
+                          href={it.href}
+                          className="text-muted-foreground transition hover:text-foreground"
+                        >
+                          {it.l}
+                        </a>
                       )}
                     </li>
                   ))}
@@ -1053,9 +1490,15 @@ function Landing() {
           <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border/40 pt-6 text-xs text-muted-foreground md:flex-row">
             <div>© {new Date().getFullYear()} App2Rack · Infrastructure Management System</div>
             <div className="flex items-center gap-5">
-              <a href="#" className="hover:text-foreground">Privacy</a>
-              <a href="#" className="hover:text-foreground">Terms</a>
-              <a href="#" className="hover:text-foreground">Cookies</a>
+              <a href="#" className="hover:text-foreground">
+                Privacy
+              </a>
+              <a href="#" className="hover:text-foreground">
+                Terms
+              </a>
+              <a href="#" className="hover:text-foreground">
+                Cookies
+              </a>
             </div>
           </div>
         </div>
@@ -1079,9 +1522,21 @@ function Landing() {
 
 const DEMO_CHAPTERS = [
   { at: 0.0, label: "Fleet overview", desc: "Live KPIs, utilization charts & server health" },
-  { at: 0.21, label: "Applications, servers & racks", desc: "Full inventory with real-time status" },
-  { at: 0.49, label: "AI Log Analyzer & Optimization Advisor", desc: "AI-generated root cause and recommendations" },
-  { at: 0.77, label: "Incidents & administration", desc: "Severity timelines, settings and integrations" },
+  {
+    at: 0.21,
+    label: "Applications, servers & racks",
+    desc: "Full inventory with real-time status",
+  },
+  {
+    at: 0.49,
+    label: "AI Log Analyzer & Optimization Advisor",
+    desc: "AI-generated root cause and recommendations",
+  },
+  {
+    at: 0.77,
+    label: "Incidents & administration",
+    desc: "Severity timelines, settings and integrations",
+  },
 ] as const;
 
 function DemoTheatre({
@@ -1189,7 +1644,8 @@ function DemoTheatre({
   function togglePlay() {
     const v = videoRef.current;
     if (!v) return;
-    if (v.paused) v.play().catch(() => {}); else v.pause();
+    if (v.paused) v.play().catch(() => {});
+    else v.pause();
   }
 
   function toggleMute() {
@@ -1212,7 +1668,8 @@ function DemoTheatre({
 
   function fmt(s: number) {
     if (!isFinite(s)) return "0:00";
-    const m = Math.floor(s / 60); const r = Math.floor(s % 60);
+    const m = Math.floor(s / 60);
+    const r = Math.floor(s % 60);
     return `${m}:${r.toString().padStart(2, "0")}`;
   }
 
@@ -1342,7 +1799,9 @@ function DemoTheatre({
               <button
                 key={c.label}
                 type="button"
-                ref={(el) => { chapterRefs.current[i] = el; }}
+                ref={(el) => {
+                  chapterRefs.current[i] = el;
+                }}
                 onClick={() => seek(chapterTimes[i], i)}
                 aria-current={active ? "true" : undefined}
                 className={`group flex w-full items-start gap-3 rounded-md border px-3 py-2.5 text-left transition ${

@@ -81,7 +81,8 @@ export function InfraBotWidget() {
               <span className="text-[10px] text-muted-foreground">AI Infrastructure Assistant</span>
             </div>
             <span className="ml-auto flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5 text-[10px] font-medium text-success">
-              <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />Online
+              <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+              Online
             </span>
           </div>
 
@@ -169,7 +170,12 @@ export function InfraBotWidget() {
               className="h-9 flex-1 bg-card/60"
               disabled={loading}
             />
-            <Button type="submit" size="icon" className="h-9 w-9 shrink-0" disabled={loading || !input.trim()}>
+            <Button
+              type="submit"
+              size="icon"
+              className="h-9 w-9 shrink-0"
+              disabled={loading || !input.trim()}
+            >
               <Send className="h-4 w-4" />
             </Button>
           </form>

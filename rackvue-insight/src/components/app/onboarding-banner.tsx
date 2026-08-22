@@ -40,19 +40,34 @@ export function OnboardingBanner({ onDone }: { onDone: () => void }) {
             <Database className="h-5 w-5" />
           </div>
           <div className="min-w-0">
-            <div className="text-sm font-semibold">Welcome to App2Rack — how would you like to start?</div>
+            <div className="text-sm font-semibold">
+              Welcome to App2Rack — how would you like to start?
+            </div>
             <div className="text-xs text-muted-foreground">
-              Load a realistic demo fleet to explore the console, or bring your own infrastructure data.
+              Load a realistic demo fleet to explore the console, or bring your own infrastructure
+              data.
             </div>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Button onClick={handleSeed} disabled={loading} size="sm" className="bg-gradient-to-r from-primary to-chart-4 text-primary-foreground shadow-[var(--shadow-glow)]">
-            {loading ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Sparkles className="mr-1.5 h-3.5 w-3.5" />}
+          <Button
+            onClick={handleSeed}
+            disabled={loading}
+            size="sm"
+            className="bg-gradient-to-r from-primary to-chart-4 text-primary-foreground shadow-[var(--shadow-glow)]"
+          >
+            {loading ? (
+              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+            )}
             Seed demo data
           </Button>
           <Button asChild variant="outline" size="sm" onClick={handleSkip}>
-            <Link to="/import"><Upload className="mr-1.5 h-3.5 w-3.5" />Bring my own data</Link>
+            <Link to="/import">
+              <Upload className="mr-1.5 h-3.5 w-3.5" />
+              Bring my own data
+            </Link>
           </Button>
           <Button onClick={handleSkip} variant="ghost" size="sm" aria-label="Dismiss">
             <X className="h-4 w-4" />

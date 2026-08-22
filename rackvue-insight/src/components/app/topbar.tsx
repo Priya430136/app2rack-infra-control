@@ -1,5 +1,20 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Search, LogOut, Boxes, Server, Workflow, ArrowRight, X, Loader2, AlertTriangle, Settings as SettingsIcon, ShieldCheck, User as UserIcon, ChevronDown, type LucideIcon } from "lucide-react";
+import {
+  Search,
+  LogOut,
+  Boxes,
+  Server,
+  Workflow,
+  ArrowRight,
+  X,
+  Loader2,
+  AlertTriangle,
+  Settings as SettingsIcon,
+  ShieldCheck,
+  User as UserIcon,
+  ChevronDown,
+  type LucideIcon,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useNavigate, Link } from "@tanstack/react-router";
 import { toast } from "sonner";
@@ -10,8 +25,12 @@ import { useQuery } from "@tanstack/react-query";
 import { applicationsQO, racksQO, serversQO } from "@/lib/infra-queries";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
-  DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { clearAuthToken } from "@/lib/auth-token";
@@ -67,23 +86,58 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
     setRole("user"); // Default to user for now
   }, [user]);
 
-  const roleLabel = role === "admin" ? "Admin" : role === "moderator" ? "Infrastructure Engineer" : "Member";
+  const roleLabel =
+    role === "admin" ? "Admin" : role === "moderator" ? "Infrastructure Engineer" : "Member";
   const initial = (user?.displayName || user?.email || "?").charAt(0).toUpperCase();
 
   const results = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return [];
 
-    type Server = { id: string; name?: string | null; hostname?: string | null; ip?: string | null; os?: string | null; status?: string | null };
-    type Application = { name?: string | null; owner?: string | null; env?: string | null; criticality?: string | null; deployment?: string | null; server_id?: string | null };
-    type Rack = { name?: string | null; dc?: string | null; capacity_u?: number | null; temperature_c?: number | null };
+    type Server = {
+      id: string;
+      name?: string | null;
+      hostname?: string | null;
+      ip?: string | null;
+      os?: string | null;
+      status?: string | null;
+    };
+    type Application = {
+      name?: string | null;
+      owner?: string | null;
+      env?: string | null;
+      criticality?: string | null;
+      deployment?: string | null;
+      server_id?: string | null;
+    };
+    type Rack = {
+      name?: string | null;
+      dc?: string | null;
+      capacity_u?: number | null;
+      temperature_c?: number | null;
+    };
 
-    const serverById = new Map<string, Server>((serversQ.data as Server[] ?? []).map((server) => [server.id, server]));
+    const serverById = new Map<string, Server>(
+      ((serversQ.data as Server[]) ?? []).map((server) => [server.id, server]),
+    );
     const matches = (...values: Array<string | number | null | undefined>) =>
-      values.some((value) => String(value ?? "").toLowerCase().includes(term));
+      values.some((value) =>
+        String(value ?? "")
+          .toLowerCase()
+          .includes(term),
+      );
 
-    const appResults: SearchResult[] = (appsQ.data as Application[] ?? [])
-      .filter((app) => matches(app.name, app.owner, app.env, app.criticality, app.deployment, serverById.get(app.server_id ?? "")?.name))
+    const appResults: SearchResult[] = ((appsQ.data as Application[]) ?? [])
+      .filter((app) =>
+        matches(
+          app.name,
+          app.owner,
+          app.env,
+          app.criticality,
+          app.deployment,
+          serverById.get(app.server_id ?? "")?.name,
+        ),
+      )
       .slice(0, 4)
       .map((app) => ({
         label: app.name ?? "Unknown App",
@@ -94,8 +148,10 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
         color: "var(--chart-1)",
       }));
 
-    const serverResults: SearchResult[] = (serversQ.data as Server[] ?? [])
-      .filter((server) => matches(server.name, server.hostname, server.ip, server.os, server.status))
+    const serverResults: SearchResult[] = ((serversQ.data as Server[]) ?? [])
+      .filter((server) =>
+        matches(server.name, server.hostname, server.ip, server.os, server.status),
+      )
       .slice(0, 4)
       .map((server) => ({
         label: server.name ?? "Unknown Server",
@@ -106,7 +162,7 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
         color: "var(--chart-4)",
       }));
 
-    const rackResults: SearchResult[] = (racksQ.data as Rack[] ?? [])
+    const rackResults: SearchResult[] = ((racksQ.data as Rack[]) ?? [])
       .filter((rack) => matches(rack.name, rack.dc, rack.capacity_u, rack.temperature_c))
       .slice(0, 4)
       .map((rack) => ({
@@ -128,7 +184,8 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
   useEffect(() => {
     if (searchError && searchOpen && trimmedTerm) {
       toast.error("Search failed", {
-        description: searchError instanceof Error ? searchError.message : "Unable to load inventory.",
+        description:
+          searchError instanceof Error ? searchError.message : "Unable to load inventory.",
       });
     }
   }, [searchError, searchOpen, trimmedTerm]);
@@ -148,7 +205,8 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
     setSearchOpen(true);
     if (searchError) {
       toast.error("Search failed", {
-        description: searchError instanceof Error ? searchError.message : "Unable to load inventory.",
+        description:
+          searchError instanceof Error ? searchError.message : "Unable to load inventory.",
       });
       return;
     }
@@ -236,7 +294,9 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
                     <div className="min-w-0">
                       <div className="font-medium">Search unavailable</div>
                       <div className="truncate text-xs opacity-80">
-                        {searchError instanceof Error ? searchError.message : "Failed to load inventory."}
+                        {searchError instanceof Error
+                          ? searchError.message
+                          : "Failed to load inventory."}
                       </div>
                     </div>
                   </div>
@@ -267,7 +327,9 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
                         </span>
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-sm font-medium">{result.label}</span>
-                          <span className="block truncate text-xs text-muted-foreground">{result.description}</span>
+                          <span className="block truncate text-xs text-muted-foreground">
+                            {result.description}
+                          </span>
                         </span>
                         <span className="rounded border border-border/50 px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
                           {result.category}
@@ -279,7 +341,9 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
                 ) : (
                   <div className="px-3 py-6 text-center text-sm text-muted-foreground">
                     <div className="font-medium text-foreground">No matches</div>
-                    <div className="mt-1 text-xs">Nothing found for “{trimmedTerm}”. Try an app, server, or rack name.</div>
+                    <div className="mt-1 text-xs">
+                      Nothing found for “{trimmedTerm}”. Try an app, server, or rack name.
+                    </div>
                   </div>
                 )}
               </div>
@@ -299,7 +363,11 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
               className="flex h-9 items-center gap-2 rounded-md border border-border/60 bg-card/50 pl-1 pr-2 transition hover:bg-card"
             >
               {user?.avatarUrl ? (
-                <img src={user.avatarUrl} alt={user.displayName} className="h-7 w-7 rounded-full object-cover" />
+                <img
+                  src={user.avatarUrl}
+                  alt={user.displayName}
+                  className="h-7 w-7 rounded-full object-cover"
+                />
               ) : (
                 <div className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-primary to-chart-4 text-xs font-semibold text-primary-foreground">
                   {initial}
@@ -311,10 +379,17 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
               <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-64 border-border/60 bg-popover/95 backdrop-blur-xl">
+          <DropdownMenuContent
+            align="end"
+            className="w-64 border-border/60 bg-popover/95 backdrop-blur-xl"
+          >
             <DropdownMenuLabel className="flex items-start gap-3 py-3">
               {user?.avatarUrl ? (
-                <img src={user.avatarUrl} alt={user.displayName} className="h-9 w-9 rounded-full object-cover" />
+                <img
+                  src={user.avatarUrl}
+                  alt={user.displayName}
+                  className="h-9 w-9 rounded-full object-cover"
+                />
               ) : (
                 <div className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-primary to-chart-4 text-sm font-semibold text-primary-foreground">
                   {initial}
@@ -322,12 +397,18 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
               )}
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{user?.displayName ?? "Loading…"}</p>
-                <p className="truncate text-[11px] font-normal text-muted-foreground">{user?.email ?? ""}</p>
+                <p className="truncate text-[11px] font-normal text-muted-foreground">
+                  {user?.email ?? ""}
+                </p>
                 <Badge
                   variant={role === "admin" ? "default" : "outline"}
                   className="mt-1.5 gap-1 text-[10px]"
                 >
-                  {role === "user" ? <UserIcon className="h-2.5 w-2.5" /> : <ShieldCheck className="h-2.5 w-2.5" />}
+                  {role === "user" ? (
+                    <UserIcon className="h-2.5 w-2.5" />
+                  ) : (
+                    <ShieldCheck className="h-2.5 w-2.5" />
+                  )}
                   {roleLabel}
                 </Badge>
               </div>
@@ -340,7 +421,10 @@ export function TopBar({ title, subtitle }: { title: string; subtitle?: string }
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onSelect={(e) => { e.preventDefault(); signOut(); }}
+              onSelect={(e) => {
+                e.preventDefault();
+                signOut();
+              }}
               className="cursor-pointer text-destructive focus:text-destructive"
             >
               <LogOut className="mr-2 h-4 w-4" /> Sign out

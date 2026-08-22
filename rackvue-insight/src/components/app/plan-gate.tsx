@@ -25,7 +25,10 @@ export function PlanGate({ feature, children }: { feature: FeatureCode; children
           </p>
           <div className="flex justify-center gap-2">
             <Button asChild size="sm" className="bg-gradient-to-r from-primary to-chart-4">
-              <Link to="/billing/pricing"><Sparkles className="mr-1 h-3.5 w-3.5" />Upgrade Now</Link>
+              <Link to="/billing/pricing">
+                <Sparkles className="mr-1 h-3.5 w-3.5" />
+                Upgrade Now
+              </Link>
             </Button>
             <Button asChild size="sm" variant="outline">
               <Link to="/billing/pricing">Compare Plans</Link>

@@ -16,12 +16,7 @@ const app = express();
 app.use(helmet()); // Security headers
 
 const configuredOrigin = process.env.CLIENT_URL || 'http://localhost:8080';
-const allowedOrigins = [
-  "http://localhost:8080",
-  "http://127.0.0.1:8080",
-  "http://172.29.224.1:8080",
-  "http://172.25.245.247:8080"
-];
+const allowedOrigins = configuredOrigin.split(',').map((origin) => origin.trim()).filter(Boolean);
 
 app.use(cors({
   origin: function(origin, callback) {

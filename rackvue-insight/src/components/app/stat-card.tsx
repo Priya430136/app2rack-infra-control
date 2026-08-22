@@ -21,20 +21,36 @@ const accentMap = {
 export function StatCard({ label, value, icon: Icon, delta, trend, accent = "primary" }: Props) {
   return (
     <Card className="relative overflow-hidden border-border/60 bg-card/60 p-5 backdrop-blur">
-      <div className={cn("absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-radial opacity-60 blur-2xl bg-gradient-to-br", accentMap[accent])} />
+      <div
+        className={cn(
+          "absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-radial opacity-60 blur-2xl bg-gradient-to-br",
+          accentMap[accent],
+        )}
+      />
       <div className="relative flex items-start justify-between">
         <div className="space-y-1">
-          <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
+          <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            {label}
+          </p>
           <p className="text-3xl font-semibold tracking-tight">{value}</p>
           {delta && (
-            <p className={cn("text-xs font-medium", {
-              "text-success": trend === "up",
-              "text-destructive": trend === "down",
-              "text-muted-foreground": trend === "flat",
-            })}>{delta}</p>
+            <p
+              className={cn("text-xs font-medium", {
+                "text-success": trend === "up",
+                "text-destructive": trend === "down",
+                "text-muted-foreground": trend === "flat",
+              })}
+            >
+              {delta}
+            </p>
           )}
         </div>
-        <div className={cn("grid h-10 w-10 place-items-center rounded-lg border border-border/60 bg-background/40", accentMap[accent].split(" ").pop())}>
+        <div
+          className={cn(
+            "grid h-10 w-10 place-items-center rounded-lg border border-border/60 bg-background/40",
+            accentMap[accent].split(" ").pop(),
+          )}
+        >
           <Icon className="h-5 w-5" />
         </div>
       </div>

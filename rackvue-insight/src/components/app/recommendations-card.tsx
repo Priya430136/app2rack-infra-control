@@ -24,10 +24,19 @@ export function RecommendationsCard() {
       </div>
       <div className="space-y-2">
         {recs.map((r) => {
-          const Icon = r.level === "critical" ? AlertCircle : r.level === "warning" ? AlertTriangle : Info;
-          const color = r.level === "critical" ? "var(--destructive)" : r.level === "warning" ? "var(--warning)" : "var(--info)";
+          const Icon =
+            r.level === "critical" ? AlertCircle : r.level === "warning" ? AlertTriangle : Info;
+          const color =
+            r.level === "critical"
+              ? "var(--destructive)"
+              : r.level === "warning"
+                ? "var(--warning)"
+                : "var(--info)";
           return (
-            <div key={r.id} className="flex gap-3 rounded-md border border-border/60 bg-background/40 p-3">
+            <div
+              key={r.id}
+              className="flex gap-3 rounded-md border border-border/60 bg-background/40 p-3"
+            >
               <Icon className="mt-0.5 h-4 w-4 shrink-0" style={{ color }} />
               <div className="leading-tight">
                 <p className="text-sm font-medium">{r.title}</p>

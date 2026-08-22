@@ -53,13 +53,15 @@ const MAX_LOG_CHARS = 25 * 1024 * 1024;
 
 export const runLogAnalysis = createServerFn({ method: "POST" })
   .inputValidator((i: unknown) =>
-    z.object({
-      logs: z.string().min(1).max(MAX_LOG_CHARS),
-      title: z.string().max(200).optional(),
-      source: z.enum(["paste", "upload", "existing"]).default("paste"),
-      filename: z.string().max(200).optional(),
-      save: z.boolean().optional().default(true),
-    }).parse(i),
+    z
+      .object({
+        logs: z.string().min(1).max(MAX_LOG_CHARS),
+        title: z.string().max(200).optional(),
+        source: z.enum(["paste", "upload", "existing"]).default("paste"),
+        filename: z.string().max(200).optional(),
+        save: z.boolean().optional().default(true),
+      })
+      .parse(i),
   )
   .handler(async ({ data }) => {
     // The actual analysis (AI if configured, rule-based fallback otherwise)
@@ -68,16 +70,13 @@ export const runLogAnalysis = createServerFn({ method: "POST" })
     return { report: res.report, model: res.model, sourceType: res.source_type, savedId: res.id };
   });
 
-export const listLogAnalyses = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { data } = await api.get("/log-analyzer");
-    return data ?? [];
-  });
+export const listLogAnalyses = createServerFn({ method: "GET" }).handler(async () => {
+  const { data } = await api.get("/log-analyzer");
+  return data ?? [];
+});
 
 export const deleteLogAnalysis = createServerFn({ method: "POST" })
-  .inputValidator((i: unknown) => 
-    z.object({ id: z.string() }).parse(i)
-  )
+  .inputValidator((i: unknown) => z.object({ id: z.string() }).parse(i))
   .handler(async ({ data }) => {
     await api.delete(`/log-analyzer/${data.id}`);
     return { ok: true };
@@ -85,12 +84,16 @@ export const deleteLogAnalysis = createServerFn({ method: "POST" })
 
 export const chatAboutLogs = createServerFn({ method: "POST" })
   .inputValidator((i: unknown) =>
-    z.object({
-      question: z.string().min(1),
-      logs: z.string().optional(),
-      report: z.any().optional(),
-      history: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string() })).optional(),
-    }).parse(i),
+    z
+      .object({
+        question: z.string().min(1),
+        logs: z.string().optional(),
+        report: z.any().optional(),
+        history: z
+          .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string() }))
+          .optional(),
+      })
+      .parse(i),
   )
   .handler(async ({ data }) => {
     const { data: res } = await api.post("/log-analyzer/chat", data);

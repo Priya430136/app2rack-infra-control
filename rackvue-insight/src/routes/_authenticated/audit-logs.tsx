@@ -10,10 +10,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, ScrollText, Filter, RotateCcw, ShieldCheck, UserIcon, Search, X } from "lucide-react";
+import {
+  Loader2,
+  ScrollText,
+  Filter,
+  RotateCcw,
+  ShieldCheck,
+  UserIcon,
+  Search,
+  X,
+} from "lucide-react";
 import { listAuditLogs, type AuditLogRow } from "@/lib/audit-logs.functions";
 import { ExportMenu } from "@/components/app/export-menu";
 import { AuditLogDetailDrawer } from "@/components/app/audit-log-detail-drawer";
@@ -33,7 +46,10 @@ export const Route = createFileRoute("/_authenticated/audit-logs")({
   head: () => ({
     meta: [
       { title: "Audit Logs · App2Rack" },
-      { name: "description", content: "Review recent user actions across your workspace with role and date filters." },
+      {
+        name: "description",
+        content: "Review recent user actions across your workspace with role and date filters.",
+      },
     ],
   }),
 });
@@ -106,9 +122,7 @@ function Page() {
   );
   const entityOptions = useMemo(
     () =>
-      Array.from(
-        new Set(allRows.map((r) => r.entity_type).filter((v): v is string => !!v)),
-      ).sort(),
+      Array.from(new Set(allRows.map((r) => r.entity_type).filter((v): v is string => !!v))).sort(),
     [allRows],
   );
 
@@ -197,7 +211,9 @@ function Page() {
             <div className="space-y-1.5">
               <Label className="text-xs">Role</Label>
               <Select value={role} onValueChange={(v) => setRole(v as RoleFilter)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All roles</SelectItem>
                   <SelectItem value="admin">Admin</SelectItem>
@@ -229,11 +245,15 @@ function Page() {
             <div className="space-y-1.5">
               <Label className="text-xs">Action</Label>
               <Select value={action} onValueChange={setAction}>
-                <SelectTrigger><SelectValue placeholder="All actions" /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue placeholder="All actions" />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All actions</SelectItem>
                   {actionOptions.map((a) => (
-                    <SelectItem key={a} value={a}>{a}</SelectItem>
+                    <SelectItem key={a} value={a}>
+                      {a}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -241,11 +261,15 @@ function Page() {
             <div className="space-y-1.5">
               <Label className="text-xs">Entity type</Label>
               <Select value={entity} onValueChange={setEntity}>
-                <SelectTrigger><SelectValue placeholder="All entities" /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue placeholder="All entities" />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All entities</SelectItem>
                   {entityOptions.map((e) => (
-                    <SelectItem key={e} value={e}>{e}</SelectItem>
+                    <SelectItem key={e} value={e}>
+                      {e}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -316,7 +340,10 @@ function Page() {
                   {rows.map((r) => (
                     <tr
                       key={r.id}
-                      onClick={() => { setSelected(r); setDrawerOpen(true); }}
+                      onClick={() => {
+                        setSelected(r);
+                        setDrawerOpen(true);
+                      }}
                       className="cursor-pointer border-b border-border/40 last:border-0 hover:bg-muted/20"
                     >
                       <td className="whitespace-nowrap px-4 py-2.5 text-xs text-muted-foreground">
@@ -325,7 +352,9 @@ function Page() {
                       <td className="px-4 py-2.5">
                         <div className="flex flex-col leading-tight">
                           <span className="font-medium">{r.actor_name ?? "—"}</span>
-                          <span className="text-[11px] text-muted-foreground">{r.actor_email ?? r.user_id.slice(0, 8)}</span>
+                          <span className="text-[11px] text-muted-foreground">
+                            {r.actor_email ?? r.user_id.slice(0, 8)}
+                          </span>
                         </div>
                       </td>
                       <td className="px-4 py-2.5">
@@ -343,7 +372,9 @@ function Page() {
                         {r.entity_type ? (
                           <span>
                             {r.entity_type}
-                            {r.entity_id ? <span className="text-foreground/70"> · {r.entity_id}</span> : null}
+                            {r.entity_id ? (
+                              <span className="text-foreground/70"> · {r.entity_id}</span>
+                            ) : null}
                           </span>
                         ) : (
                           "—"

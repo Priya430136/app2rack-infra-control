@@ -22,7 +22,10 @@ function Page() {
   const [rcaOpen, setRcaOpen] = useState(false);
   const [rcaIncident, setRcaIncident] = useState<Incident | null>(null);
 
-  const openRca = (i: Incident) => { setRcaIncident(i); setRcaOpen(true); };
+  const openRca = (i: Incident) => {
+    setRcaIncident(i);
+    setRcaOpen(true);
+  };
 
   const fetchIncidents = useServerFn(getIncidents);
   const { data, isLoading, error, refetch } = useQuery({
@@ -47,7 +50,10 @@ function Page() {
 
   return (
     <>
-      <TopBar title="Incidents & Downtime" subtitle={`${open.length} active · ${incidents.length} total this week`} />
+      <TopBar
+        title="Incidents & Downtime"
+        subtitle={`${open.length} active · ${incidents.length} total this week`}
+      />
       <div className="space-y-4 p-6">
         <div className="grid grid-cols-4 gap-4">
           {(["Critical", "High", "Medium", "Low"] as const).map((sev) => {
@@ -56,7 +62,9 @@ function Page() {
               <Card key={sev} className="border-border/60 bg-card/60 p-4 backdrop-blur">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{sev}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {sev}
+                    </p>
                     <p className="mt-1 text-2xl font-semibold">{count}</p>
                   </div>
                   <SeverityBadge severity={sev} />
@@ -72,9 +80,15 @@ function Page() {
             <span className="text-xs text-muted-foreground">Showing sample data</span>
           )}
           <div className="flex items-center gap-2">
-            <ExportMenu rows={incidents} filename="incidents" title="Incidents Report" subtitle="Operational incidents log" />
+            <ExportMenu
+              rows={incidents}
+              filename="incidents"
+              title="Incidents Report"
+              subtitle="Operational incidents log"
+            />
             <Button size="sm" onClick={() => setDialogOpen(true)}>
-              <Plus className="mr-1.5 h-3.5 w-3.5" />Report Incident
+              <Plus className="mr-1.5 h-3.5 w-3.5" />
+              Report Incident
             </Button>
           </div>
         </div>
@@ -91,7 +105,10 @@ function Page() {
 
         <div className="space-y-3">
           {incidents.map((i) => (
-            <Card key={i.id} className="border-border/60 bg-card/60 p-4 backdrop-blur transition hover:border-primary/30">
+            <Card
+              key={i.id}
+              className="border-border/60 bg-card/60 p-4 backdrop-blur transition hover:border-primary/30"
+            >
               <div className="flex items-start gap-4">
                 <div
                   className={`mt-0.5 grid h-9 w-9 place-items-center rounded-md ${
@@ -145,7 +162,11 @@ function Page() {
         </div>
       </div>
 
-      <ReportIncidentDialog open={dialogOpen} onOpenChange={setDialogOpen} onCreated={() => refetch()} />
+      <ReportIncidentDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onCreated={() => refetch()}
+      />
       <RcaPanel
         open={rcaOpen}
         onOpenChange={setRcaOpen}
@@ -155,7 +176,9 @@ function Page() {
                 id: rcaIncident.id?.match(/^[0-9a-f-]{36}$/i) ? rcaIncident.id : undefined,
                 title: rcaIncident.title,
                 severity: rcaIncident.severity,
-                serverId: rcaIncident.serverId?.match(/^[0-9a-f-]{36}$/i) ? rcaIncident.serverId : undefined,
+                serverId: rcaIncident.serverId?.match(/^[0-9a-f-]{36}$/i)
+                  ? rcaIncident.serverId
+                  : undefined,
                 notes: rcaIncident.notes,
               }
             : null

@@ -17,7 +17,7 @@ import api from "@/lib/api";
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async ({ location }) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
       throw redirect({ to: "/login", search: { redirect: location.href } });
     }
@@ -30,7 +30,9 @@ function AppLayout() {
   const qc = useQueryClient();
   useRealtimeInvalidate();
 
-  useEffect(() => { bootstrapScenario(qc); }, [qc]);
+  useEffect(() => {
+    bootstrapScenario(qc);
+  }, [qc]);
 
   const [userId, setUserId] = useState<string | null>(null);
   const [authReady, setAuthReady] = useState(false);
@@ -42,34 +44,37 @@ function AppLayout() {
 
   useEffect(() => {
     let active = true;
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     if (!token) {
       navigate({ to: "/login", search: { redirect: window.location.pathname }, replace: true });
       return;
     }
 
-    api.get("/auth/me").then(({ data }) => {
-      if (!active) return;
-      
-      const userData = data.data;
-      if (!userData) {
-        localStorage.removeItem('token');
+    api
+      .get("/auth/me")
+      .then(({ data }) => {
+        if (!active) return;
+
+        const userData = data.data;
+        if (!userData) {
+          localStorage.removeItem("token");
+          navigate({ to: "/login", search: { redirect: window.location.pathname }, replace: true });
+          return;
+        }
+
+        const id = userData.id;
+        setUserId(id);
+        setAuthReady(true);
+        if (id && typeof window !== "undefined") {
+          setAcknowledged(localStorage.getItem(`a2r:onboarded:${id}`) === "1");
+        }
+      })
+      .catch(() => {
+        if (!active) return;
+        localStorage.removeItem("token");
         navigate({ to: "/login", search: { redirect: window.location.pathname }, replace: true });
-        return;
-      }
-      
-      const id = userData.id;
-      setUserId(id);
-      setAuthReady(true);
-      if (id && typeof window !== "undefined") {
-        setAcknowledged(localStorage.getItem(`a2r:onboarded:${id}`) === "1");
-      }
-    }).catch(() => {
-      if (!active) return;
-      localStorage.removeItem('token');
-      navigate({ to: "/login", search: { redirect: window.location.pathname }, replace: true });
-    });
+      });
 
     return () => {
       active = false;

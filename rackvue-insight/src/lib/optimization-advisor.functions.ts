@@ -12,7 +12,11 @@ export type OptimizationRecommendation = {
   expected_improvement: string;
   responsible_team: string;
   timeframe: "Immediate" | "This Week" | "This Month" | "Long-Term";
-  target?: { type: "server" | "rack" | "application" | "storage" | "network" | "cost" | "security"; id?: string; name?: string };
+  target?: {
+    type: "server" | "rack" | "application" | "storage" | "network" | "cost" | "security";
+    id?: string;
+    name?: string;
+  };
 };
 
 export type OptimizationReport = {
@@ -45,10 +49,27 @@ export type OptimizationReport = {
     breakdown: Array<{ area: string; amount: number }>;
   };
   capacity_forecast: {
-    horizon: Array<{ period: "30d" | "90d" | "180d" | "1y"; cpu: number; memory: number; storage: number; power: number }>;
+    horizon: Array<{
+      period: "30d" | "90d" | "180d" | "1y";
+      cpu: number;
+      memory: number;
+      storage: number;
+      power: number;
+    }>;
   };
-  rack_utilization: Array<{ rack: string; current: number; projected: number; temperature: number }>;
-  server_matrix: Array<{ server: string; cpu: number; ram: number; storage: number; status: string }>;
+  rack_utilization: Array<{
+    rack: string;
+    current: number;
+    projected: number;
+    temperature: number;
+  }>;
+  server_matrix: Array<{
+    server: string;
+    cpu: number;
+    ram: number;
+    storage: number;
+    status: string;
+  }>;
   risk_heatmap: Array<{ area: string; risk: number; confidence: number }>;
   radar: Array<{ dimension: string; value: number }>;
   timeline: {
@@ -60,20 +81,26 @@ export type OptimizationReport = {
 };
 
 export const runOptimizationAnalysis = createServerFn({ method: "POST" })
-  .inputValidator((i: unknown) => z.object({ title: z.string().max(200).optional() }).parse(i ?? {}))
+  .inputValidator((i: unknown) =>
+    z.object({ title: z.string().max(200).optional() }).parse(i ?? {}),
+  )
   .handler(async ({ data }) => {
     // The actual analysis (AI if configured, rule-based fallback otherwise) runs
     // server-side against the user's real infrastructure - see
     // server/src/services/optimization-engine.service.js.
     const { data: res } = await api.post("/optimization-advisor", { title: data.title });
-    return { report: res.report as OptimizationReport, model: res.model as string, sourceType: res.source_type as string, savedId: res.id as string };
+    return {
+      report: res.report as OptimizationReport,
+      model: res.model as string,
+      sourceType: res.source_type as string,
+      savedId: res.id as string,
+    };
   });
 
-export const listOptimizationAnalyses = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { data } = await api.get("/optimization-advisor");
-    return data ?? [];
-  });
+export const listOptimizationAnalyses = createServerFn({ method: "GET" }).handler(async () => {
+  const { data } = await api.get("/optimization-advisor");
+  return data ?? [];
+});
 
 export const deleteOptimizationAnalysis = createServerFn({ method: "POST" })
   .inputValidator((i: unknown) => z.object({ id: z.string().uuid() }).parse(i))
@@ -83,11 +110,18 @@ export const deleteOptimizationAnalysis = createServerFn({ method: "POST" })
   });
 
 export const chatAboutOptimization = createServerFn({ method: "POST" })
-  .inputValidator((i: unknown) => z.object({
-    question: z.string().min(1).max(2000),
-    report: z.any().optional(),
-    history: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string() })).max(20).optional(),
-  }).parse(i))
+  .inputValidator((i: unknown) =>
+    z
+      .object({
+        question: z.string().min(1).max(2000),
+        report: z.any().optional(),
+        history: z
+          .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string() }))
+          .max(20)
+          .optional(),
+      })
+      .parse(i),
+  )
   .handler(async ({ data }) => {
     const { data: res } = await api.post("/optimization-advisor/chat", data);
     return { answer: res.answer as string };

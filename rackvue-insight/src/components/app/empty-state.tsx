@@ -34,15 +34,23 @@ export function EmptyState({ entity }: { entity: string }) {
       </div>
       <h3 className="text-base font-semibold">No {entity} yet</h3>
       <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
-        Start by seeding a realistic demo dataset, importing your own CSV/XLSX/JSON, or creating a record manually.
+        Start by seeding a realistic demo dataset, importing your own CSV/XLSX/JSON, or creating a
+        record manually.
       </p>
       <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
         <Button onClick={doSeed} disabled={loading} size="sm">
-          {loading ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Sparkles className="mr-1.5 h-3.5 w-3.5" />}
+          {loading ? (
+            <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+          )}
           Seed demo data
         </Button>
         <Button asChild variant="outline" size="sm">
-          <Link to="/import"><Upload className="mr-1.5 h-3.5 w-3.5" />Import dataset</Link>
+          <Link to="/import">
+            <Upload className="mr-1.5 h-3.5 w-3.5" />
+            Import dataset
+          </Link>
         </Button>
       </div>
     </Card>

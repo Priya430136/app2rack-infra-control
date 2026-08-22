@@ -19,8 +19,21 @@ export const Scene9Search: React.FC = () => {
   const overlayOp = interpolate(frame, [5, 18], [0, 1], { extrapolateRight: "clamp" });
 
   return (
-    <AppFrame active="Dashboard" title="Overview" subtitle="Real-time fleet health, utilization & incidents">
-      <div style={{ fontFamily: mono, color: theme.primary, fontSize: 14, letterSpacing: 4, opacity: kicker, marginBottom: 14 }}>
+    <AppFrame
+      active="Dashboard"
+      title="Overview"
+      subtitle="Real-time fleet health, utilization & incidents"
+    >
+      <div
+        style={{
+          fontFamily: mono,
+          color: theme.primary,
+          fontSize: 14,
+          letterSpacing: 4,
+          opacity: kicker,
+          marginBottom: 14,
+        }}
+      >
         [ 07 ] GLOBAL SEARCH
       </div>
 
@@ -35,9 +48,32 @@ export const Scene9Search: React.FC = () => {
           paddingTop: 90,
         }}
       >
-        <GlassPanel style={{ width: 620, height: "fit-content", padding: 0, overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,0.6)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", borderBottom: `1px solid ${theme.border}` }}>
-            <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={theme.mutedForeground} strokeWidth={2}>
+        <GlassPanel
+          style={{
+            width: 620,
+            height: "fit-content",
+            padding: 0,
+            overflow: "hidden",
+            boxShadow: "0 40px 100px rgba(0,0,0,0.6)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              padding: "16px 20px",
+              borderBottom: `1px solid ${theme.border}`,
+            }}
+          >
+            <svg
+              width={16}
+              height={16}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke={theme.mutedForeground}
+              strokeWidth={2}
+            >
               <circle cx={11} cy={11} r={7} />
               <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
             </svg>
@@ -76,8 +112,21 @@ export const Scene9Search: React.FC = () => {
                     >
                       {r.kind}
                     </span>
-                    <span style={{ fontFamily: display, fontSize: 14, color: theme.foreground, fontWeight: 500 }}>{r.name}</span>
-                    <span style={{ marginLeft: "auto", fontSize: 11.5, color: theme.mutedForeground }}>{r.meta}</span>
+                    <span
+                      style={{
+                        fontFamily: display,
+                        fontSize: 14,
+                        color: theme.foreground,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {r.name}
+                    </span>
+                    <span
+                      style={{ marginLeft: "auto", fontSize: 11.5, color: theme.mutedForeground }}
+                    >
+                      {r.meta}
+                    </span>
                   </div>
                 );
               })}

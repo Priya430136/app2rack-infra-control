@@ -40,17 +40,18 @@ export function notifyAlert(a: Alert, opts: NotifyOptions = {}) {
     id: a.id,
     description: a.description,
     duration,
-    action: isIncident && navigate
-      ? {
-          label: "View incident",
-          onClick: () => navigate({ to: "/incidents" }),
-        }
-      : navigate
-      ? {
-          label: "View",
-          onClick: () => navigate({ to: "/incidents" }),
-        }
-      : undefined,
+    action:
+      isIncident && navigate
+        ? {
+            label: "View incident",
+            onClick: () => navigate({ to: "/incidents" }),
+          }
+        : navigate
+          ? {
+              label: "View",
+              onClick: () => navigate({ to: "/incidents" }),
+            }
+          : undefined,
     cancel: {
       label: a.level === "critical" ? "Acknowledge" : "Dismiss",
       onClick: () => toast.dismiss(a.id),

@@ -14,14 +14,29 @@ export const Scene2Landing: React.FC = () => {
   const scale = interpolate(frame, [0, 150], [1, 1.06], { extrapolateRight: "clamp" });
 
   return (
-    <AbsoluteFill style={{ background: theme.background, alignItems: "center", justifyContent: "center", transform: `scale(${scale})` }}>
+    <AbsoluteFill
+      style={{
+        background: theme.background,
+        alignItems: "center",
+        justifyContent: "center",
+        transform: `scale(${scale})`,
+      }}
+    >
       <AbsoluteFill
         style={{
           background:
             "radial-gradient(1100px 700px at 30% 20%, oklch(0.78 0.15 200 / 0.16), transparent 60%), radial-gradient(900px 650px at 75% 65%, oklch(0.65 0.2 290 / 0.16), transparent 60%)",
         }}
       />
-      <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", padding: "0 160px" }}>
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "0 160px",
+        }}
+      >
         <div
           style={{
             transform: `scale(${badge})`,
@@ -37,7 +52,15 @@ export const Scene2Landing: React.FC = () => {
             fontFamily: body,
           }}
         >
-          <span style={{ width: 7, height: 7, borderRadius: 999, background: theme.success, boxShadow: `0 0 10px ${theme.success}` }} />
+          <span
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: 999,
+              background: theme.success,
+              boxShadow: `0 0 10px ${theme.success}`,
+            }}
+          />
           Enterprise Infrastructure Operations Platform
         </div>
 
@@ -58,7 +81,13 @@ export const Scene2Landing: React.FC = () => {
           From the first API call
           <br />
           to the{" "}
-          <span style={{ background: theme.gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <span
+            style={{
+              background: theme.gradient,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
             last rack unit.
           </span>
         </div>
@@ -75,7 +104,8 @@ export const Scene2Landing: React.FC = () => {
             opacity: sub,
           }}
         >
-          Live health, dependency graphs and incident response for modern infrastructure teams — without switching tabs.
+          Live health, dependency graphs and incident response for modern infrastructure teams —
+          without switching tabs.
         </div>
 
         <div style={{ marginTop: 44, display: "flex", gap: 18, opacity: cta }}>

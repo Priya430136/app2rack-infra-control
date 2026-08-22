@@ -33,8 +33,12 @@ export const AppFrame: React.FC<{
   enterDelay?: number;
 }> = ({ active, title, subtitle, children, enterDelay = 0 }) => {
   const frame = useCurrentFrame();
-  const op = interpolate(frame, [enterDelay, enterDelay + 14], [0, 1], { extrapolateRight: "clamp" });
-  const scale = interpolate(frame, [enterDelay, enterDelay + 40], [1.015, 1], { extrapolateRight: "clamp" });
+  const op = interpolate(frame, [enterDelay, enterDelay + 14], [0, 1], {
+    extrapolateRight: "clamp",
+  });
+  const scale = interpolate(frame, [enterDelay, enterDelay + 40], [1.015, 1], {
+    extrapolateRight: "clamp",
+  });
 
   return (
     <AbsoluteFill
@@ -72,19 +76,53 @@ export const AppFrame: React.FC<{
               boxShadow: "0 0 24px oklch(0.78 0.15 200 / 0.35)",
             }}
           >
-            <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={theme.background} strokeWidth={2.5}>
+            <svg
+              width={16}
+              height={16}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke={theme.background}
+              strokeWidth={2.5}
+            >
               <path d="M3 12h4l3 8 4-16 3 8h4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           <div>
-            <div style={{ fontFamily: display, fontWeight: 600, fontSize: 15, color: theme.foreground }}>App2Rack</div>
-            <div style={{ fontFamily: mono, fontSize: 9, letterSpacing: 2, color: theme.mutedForeground }}>INFRA CONTROL</div>
+            <div
+              style={{
+                fontFamily: display,
+                fontWeight: 600,
+                fontSize: 15,
+                color: theme.foreground,
+              }}
+            >
+              App2Rack
+            </div>
+            <div
+              style={{
+                fontFamily: mono,
+                fontSize: 9,
+                letterSpacing: 2,
+                color: theme.mutedForeground,
+              }}
+            >
+              INFRA CONTROL
+            </div>
           </div>
         </div>
 
         {NAV_GROUPS.map((g) => (
           <div key={g.heading} style={{ marginTop: 28 }}>
-            <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: 2, color: theme.mutedForeground, padding: "0 10px", marginBottom: 8 }}>
+            <div
+              style={{
+                fontFamily: mono,
+                fontSize: 10,
+                letterSpacing: 2,
+                color: theme.mutedForeground,
+                padding: "0 10px",
+                marginBottom: 8,
+              }}
+            >
               {g.heading.toUpperCase()}
             </div>
             {g.items.map((item) => {
@@ -121,7 +159,16 @@ export const AppFrame: React.FC<{
           </div>
         ))}
 
-        <div style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 10, padding: "12px 8px", borderTop: `1px solid ${theme.border}` }}>
+        <div
+          style={{
+            marginTop: "auto",
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "12px 8px",
+            borderTop: `1px solid ${theme.border}`,
+          }}
+        >
           <div
             style={{
               width: 30,
@@ -140,7 +187,9 @@ export const AppFrame: React.FC<{
             P
           </div>
           <div>
-            <div style={{ fontSize: 12.5, color: theme.foreground, fontWeight: 500 }}>Priya Skand</div>
+            <div style={{ fontSize: 12.5, color: theme.foreground, fontWeight: 500 }}>
+              Priya Skand
+            </div>
             <div style={{ fontSize: 10.5, color: theme.mutedForeground }}>Infrastructure Lead</div>
           </div>
         </div>
@@ -162,8 +211,21 @@ export const AppFrame: React.FC<{
           }}
         >
           <div>
-            <div style={{ fontFamily: display, fontSize: 19, fontWeight: 600, color: theme.foreground }}>{title}</div>
-            {subtitle && <div style={{ fontSize: 12, color: theme.mutedForeground, marginTop: 1 }}>{subtitle}</div>}
+            <div
+              style={{
+                fontFamily: display,
+                fontSize: 19,
+                fontWeight: 600,
+                color: theme.foreground,
+              }}
+            >
+              {title}
+            </div>
+            {subtitle && (
+              <div style={{ fontSize: 12, color: theme.mutedForeground, marginTop: 1 }}>
+                {subtitle}
+              </div>
+            )}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <div
@@ -179,21 +241,65 @@ export const AppFrame: React.FC<{
                 fontSize: 13,
               }}
             >
-              <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <svg
+                width={13}
+                height={13}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
                 <circle cx={11} cy={11} r={7} />
                 <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
               </svg>
               Search apps, servers, racks…
-              <span style={{ marginLeft: "auto", fontFamily: mono, fontSize: 10, border: `1px solid ${theme.border}`, borderRadius: 4, padding: "1px 5px" }}>
+              <span
+                style={{
+                  marginLeft: "auto",
+                  fontFamily: mono,
+                  fontSize: 10,
+                  border: `1px solid ${theme.border}`,
+                  borderRadius: 4,
+                  padding: "1px 5px",
+                }}
+              >
                 Ctrl K
               </span>
             </div>
-            <div style={{ position: "relative", width: 32, height: 32, borderRadius: 999, border: `1px solid ${theme.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke={theme.mutedForeground} strokeWidth={2}>
+            <div
+              style={{
+                position: "relative",
+                width: 32,
+                height: 32,
+                borderRadius: 999,
+                border: `1px solid ${theme.border}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <svg
+                width={15}
+                height={15}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={theme.mutedForeground}
+                strokeWidth={2}
+              >
                 <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.73 21a2 2 0 01-3.46 0" />
               </svg>
-              <span style={{ position: "absolute", top: -2, right: -2, width: 8, height: 8, borderRadius: 999, background: theme.destructive }} />
+              <span
+                style={{
+                  position: "absolute",
+                  top: -2,
+                  right: -2,
+                  width: 8,
+                  height: 8,
+                  borderRadius: 999,
+                  background: theme.destructive,
+                }}
+              />
             </div>
           </div>
         </div>

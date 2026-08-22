@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { createIsomorphicFn } from '@tanstack/react-start';
-import { getAuthToken, clearAuthToken, AUTH_COOKIE_NAME } from './auth-token';
+import axios from "axios";
+import { createIsomorphicFn } from "@tanstack/react-start";
+import { getAuthToken, clearAuthToken, AUTH_COOKIE_NAME } from "./auth-token";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -17,7 +17,7 @@ const api = axios.create({
 // out of the request cookie mirrored at login time instead (see auth-token.ts).
 const getServerAuthToken = createIsomorphicFn()
   .server(async () => {
-    const { getCookie } = await import('@tanstack/react-start/server');
+    const { getCookie } = await import("@tanstack/react-start/server");
     return getCookie(AUTH_COOKIE_NAME) || null;
   })
   .client(async () => null);
@@ -25,7 +25,7 @@ const getServerAuthToken = createIsomorphicFn()
 // Add a request interceptor to attach the JWT token
 api.interceptors.request.use(
   async (config) => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const token = getAuthToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -40,7 +40,7 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Add a response interceptor to handle errors
@@ -48,13 +48,13 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         clearAuthToken();
         // window.location.href = '/login';
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

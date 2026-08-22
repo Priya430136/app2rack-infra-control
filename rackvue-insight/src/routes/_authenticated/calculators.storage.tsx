@@ -8,8 +8,26 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { HardDrive, TrendingUp, Database, ShieldAlert, History, Trash2, ArrowUpDown, X, Loader2 } from "lucide-react";
-import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import {
+  HardDrive,
+  TrendingUp,
+  Database,
+  ShieldAlert,
+  History,
+  Trash2,
+  ArrowUpDown,
+  X,
+  Loader2,
+} from "lucide-react";
+import {
+  AreaChart,
+  Area,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 import { exportPDF } from "@/lib/exporters";
 import { listCalcHistory, saveCalc, deleteCalc } from "@/lib/calc-history.functions";
 
@@ -40,8 +58,17 @@ const DEFAULTS: Inputs = {
 type HistoryEntry = Inputs & { id: string; monthlyTB: number; yearlyTB: number };
 type SortKey = "newest" | "monthly-desc" | "monthly-asc" | "users-desc";
 
-function rowToEntry(row: { id: string; inputs: Inputs; outputs: { monthlyTB: number; yearlyTB: number } }): HistoryEntry {
-  return { ...row.inputs, id: row.id, monthlyTB: row.outputs.monthlyTB, yearlyTB: row.outputs.yearlyTB };
+function rowToEntry(row: {
+  id: string;
+  inputs: Inputs;
+  outputs: { monthlyTB: number; yearlyTB: number };
+}): HistoryEntry {
+  return {
+    ...row.inputs,
+    id: row.id,
+    monthlyTB: row.outputs.monthlyTB,
+    yearlyTB: row.outputs.yearlyTB,
+  };
 }
 
 function fmtTB(v: number) {
@@ -73,9 +100,15 @@ function StorageCalculator() {
   const history: HistoryEntry[] = (historyQ.data ?? []).map(rowToEntry);
 
   const saveMut = useMutation({
-    mutationFn: (entry: { label?: string; inputs: Inputs; outputs: { monthlyTB: number; yearlyTB: number } }) =>
-      saveFn({ data: { kind: "storage", ...entry } }),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["calc-history", "storage"] }); toast.success("Saved to history"); },
+    mutationFn: (entry: {
+      label?: string;
+      inputs: Inputs;
+      outputs: { monthlyTB: number; yearlyTB: number };
+    }) => saveFn({ data: { kind: "storage", ...entry } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["calc-history", "storage"] });
+      toast.success("Saved to history");
+    },
     onError: () => toast.error("Failed to save"),
   });
   const delMut = useMutation({
@@ -95,14 +128,19 @@ function StorageCalculator() {
     }));
     const finalTB = forecast[forecast.length - 1].storage + forecast[forecast.length - 1].backup;
     const risk =
-      finalTB > 500 ? { label: "High", tone: "text-destructive" } :
-      finalTB > 100 ? { label: "Medium", tone: "text-warning" } :
-      { label: "Low", tone: "text-success" };
+      finalTB > 500
+        ? { label: "High", tone: "text-destructive" }
+        : finalTB > 100
+          ? { label: "Medium", tone: "text-warning" }
+          : { label: "Low", tone: "text-success" };
     return { dailyGB, monthlyTB, yearlyTB, backupTB, forecast, risk, tier: tier(monthlyTB) };
   }, [inp]);
 
   function save() {
-    saveMut.mutate({ inputs: inp, outputs: { monthlyTB: calc.monthlyTB, yearlyTB: calc.yearlyTB } });
+    saveMut.mutate({
+      inputs: inp,
+      outputs: { monthlyTB: calc.monthlyTB, yearlyTB: calc.yearlyTB },
+    });
   }
 
   const sortedHistory = useMemo(() => {
@@ -137,7 +175,10 @@ function StorageCalculator() {
 
   return (
     <>
-      <TopBar title="Storage Sizing Calculator" subtitle="Estimate enterprise storage requirements & growth" />
+      <TopBar
+        title="Storage Sizing Calculator"
+        subtitle="Estimate enterprise storage requirements & growth"
+      />
       <div className="grid gap-6 p-6 lg:grid-cols-[380px_1fr]">
         <Card className="p-5">
           <div className="mb-4 flex items-center gap-2">
@@ -145,35 +186,90 @@ function StorageCalculator() {
             <h3 className="text-sm font-semibold">Inputs</h3>
           </div>
           <div className="grid gap-3">
-            <NumField label="Daily Active Users" value={inp.users} onChange={(v) => setInp({ ...inp, users: v })} />
-            <NumField label="Avg Upload Size (MB)" value={inp.uploadMB} onChange={(v) => setInp({ ...inp, uploadMB: v })} step={0.5} />
-            <NumField label="Uploads / user / day" value={inp.uploadsPerDay} onChange={(v) => setInp({ ...inp, uploadsPerDay: v })} step={0.5} />
-            <NumField label="Daily Log Generation (GB)" value={inp.logsGB} onChange={(v) => setInp({ ...inp, logsGB: v })} />
-            <NumField label="Backup Replication Factor" value={inp.replication} onChange={(v) => setInp({ ...inp, replication: v })} />
-            <NumField label="Retention (months)" value={inp.retentionMonths} onChange={(v) => setInp({ ...inp, retentionMonths: v })} />
-            <NumField label="Annual Growth (%)" value={inp.growthPct} onChange={(v) => setInp({ ...inp, growthPct: v })} />
+            <NumField
+              label="Daily Active Users"
+              value={inp.users}
+              onChange={(v) => setInp({ ...inp, users: v })}
+            />
+            <NumField
+              label="Avg Upload Size (MB)"
+              value={inp.uploadMB}
+              onChange={(v) => setInp({ ...inp, uploadMB: v })}
+              step={0.5}
+            />
+            <NumField
+              label="Uploads / user / day"
+              value={inp.uploadsPerDay}
+              onChange={(v) => setInp({ ...inp, uploadsPerDay: v })}
+              step={0.5}
+            />
+            <NumField
+              label="Daily Log Generation (GB)"
+              value={inp.logsGB}
+              onChange={(v) => setInp({ ...inp, logsGB: v })}
+            />
+            <NumField
+              label="Backup Replication Factor"
+              value={inp.replication}
+              onChange={(v) => setInp({ ...inp, replication: v })}
+            />
+            <NumField
+              label="Retention (months)"
+              value={inp.retentionMonths}
+              onChange={(v) => setInp({ ...inp, retentionMonths: v })}
+            />
+            <NumField
+              label="Annual Growth (%)"
+              value={inp.growthPct}
+              onChange={(v) => setInp({ ...inp, growthPct: v })}
+            />
           </div>
           <div className="mt-4 flex gap-2">
             <Button size="sm" onClick={save} disabled={saveMut.isPending}>
-              {saveMut.isPending ? <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" /> : <History className="mr-1 h-3.5 w-3.5" />}
+              {saveMut.isPending ? (
+                <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <History className="mr-1 h-3.5 w-3.5" />
+              )}
               Save
             </Button>
-            <Button size="sm" variant="outline" onClick={exportReport}>Export PDF</Button>
+            <Button size="sm" variant="outline" onClick={exportReport}>
+              Export PDF
+            </Button>
           </div>
         </Card>
 
         <div className="grid gap-4">
           <div className="grid gap-4 md:grid-cols-4">
-            <Metric icon={<Database className="h-4 w-4" />} label="Monthly" value={fmtTB(calc.monthlyTB)} />
-            <Metric icon={<TrendingUp className="h-4 w-4" />} label="Yearly" value={fmtTB(calc.yearlyTB)} />
-            <Metric icon={<HardDrive className="h-4 w-4" />} label="Backup" value={fmtTB(calc.backupTB)} />
-            <Metric icon={<ShieldAlert className="h-4 w-4" />} label="Risk" value={calc.risk.label} tone={calc.risk.tone} />
+            <Metric
+              icon={<Database className="h-4 w-4" />}
+              label="Monthly"
+              value={fmtTB(calc.monthlyTB)}
+            />
+            <Metric
+              icon={<TrendingUp className="h-4 w-4" />}
+              label="Yearly"
+              value={fmtTB(calc.yearlyTB)}
+            />
+            <Metric
+              icon={<HardDrive className="h-4 w-4" />}
+              label="Backup"
+              value={fmtTB(calc.backupTB)}
+            />
+            <Metric
+              icon={<ShieldAlert className="h-4 w-4" />}
+              label="Risk"
+              value={calc.risk.label}
+              tone={calc.risk.tone}
+            />
           </div>
 
           <Card className="p-5">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-sm font-semibold">12-month Growth Forecast</h3>
-              <span className={`text-xs font-medium ${calc.tier.tone}`}>Tier: {calc.tier.label}</span>
+              <span className={`text-xs font-medium ${calc.tier.tone}`}>
+                Tier: {calc.tier.label}
+              </span>
             </div>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
@@ -191,9 +287,29 @@ function StorageCalculator() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} />
                   <XAxis dataKey="month" stroke="var(--muted-foreground)" fontSize={11} />
                   <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                  <Tooltip contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                  <Area type="monotone" dataKey="storage" name="Primary (TB)" stroke="oklch(0.78 0.15 200)" fill="url(#g1)" strokeWidth={2} />
-                  <Area type="monotone" dataKey="backup" name="Backup (TB)" stroke="oklch(0.72 0.18 30)" fill="url(#g2)" strokeWidth={2} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "var(--popover)",
+                      border: "1px solid var(--border)",
+                      borderRadius: 8,
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="storage"
+                    name="Primary (TB)"
+                    stroke="oklch(0.78 0.15 200)"
+                    fill="url(#g1)"
+                    strokeWidth={2}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="backup"
+                    name="Backup (TB)"
+                    stroke="oklch(0.72 0.18 30)"
+                    fill="url(#g2)"
+                    strokeWidth={2}
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -204,13 +320,21 @@ function StorageCalculator() {
               <div className="mb-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold">Calculation History</h3>
-                  <span className="rounded-full bg-muted/40 px-2 py-0.5 text-[10px] text-muted-foreground">{history.length}</span>
+                  <span className="rounded-full bg-muted/40 px-2 py-0.5 text-[10px] text-muted-foreground">
+                    {history.length}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() =>
                       setSort((s) =>
-                        s === "newest" ? "monthly-desc" : s === "monthly-desc" ? "monthly-asc" : s === "monthly-asc" ? "users-desc" : "newest",
+                        s === "newest"
+                          ? "monthly-desc"
+                          : s === "monthly-desc"
+                            ? "monthly-asc"
+                            : s === "monthly-asc"
+                              ? "users-desc"
+                              : "newest",
                       )
                     }
                     className="flex items-center gap-1 rounded-md border border-border/60 px-2 py-1 text-[10px] text-muted-foreground hover:bg-muted/40"
@@ -221,22 +345,43 @@ function StorageCalculator() {
                     {sort === "monthly-asc" && "Smallest"}
                     {sort === "users-desc" && "Most users"}
                   </button>
-                  <Button size="sm" variant="ghost" onClick={() => history.forEach((h) => delMut.mutate(h.id))}>
-                    <Trash2 className="mr-1 h-3.5 w-3.5" />Clear
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => history.forEach((h) => delMut.mutate(h.id))}
+                  >
+                    <Trash2 className="mr-1 h-3.5 w-3.5" />
+                    Clear
                   </Button>
                 </div>
               </div>
               <div className="grid gap-2">
                 {sortedHistory.map((h) => (
-                  <div key={h.id} className="group flex items-center justify-between rounded-md border border-border/40 bg-muted/20 px-3 py-2 text-xs transition hover:bg-muted/40">
+                  <div
+                    key={h.id}
+                    className="group flex items-center justify-between rounded-md border border-border/40 bg-muted/20 px-3 py-2 text-xs transition hover:bg-muted/40"
+                  >
                     <button
-                      onClick={() => setInp({ users: h.users, uploadMB: h.uploadMB, uploadsPerDay: h.uploadsPerDay, logsGB: h.logsGB, replication: h.replication, retentionMonths: h.retentionMonths, growthPct: h.growthPct })}
+                      onClick={() =>
+                        setInp({
+                          users: h.users,
+                          uploadMB: h.uploadMB,
+                          uploadsPerDay: h.uploadsPerDay,
+                          logsGB: h.logsGB,
+                          replication: h.replication,
+                          retentionMonths: h.retentionMonths,
+                          growthPct: h.growthPct,
+                        })
+                      }
                       className="flex-1 text-left text-muted-foreground hover:text-foreground"
                       title="Load these inputs"
                     >
-                      {h.users.toLocaleString()} users · {h.uploadMB}MB × {h.uploadsPerDay}/day · ×{h.replication}
+                      {h.users.toLocaleString()} users · {h.uploadMB}MB × {h.uploadsPerDay}/day · ×
+                      {h.replication}
                     </button>
-                    <span className="mx-3 font-mono">{fmtTB(h.monthlyTB)} / mo · {fmtTB(h.yearlyTB)} / yr</span>
+                    <span className="mx-3 font-mono">
+                      {fmtTB(h.monthlyTB)} / mo · {fmtTB(h.yearlyTB)} / yr
+                    </span>
                     <button
                       onClick={() => delMut.mutate(h.id)}
                       className="grid h-6 w-6 place-items-center rounded text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
@@ -255,19 +400,49 @@ function StorageCalculator() {
   );
 }
 
-function NumField({ label, value, onChange, step = 1 }: { label: string; value: number; onChange: (v: number) => void; step?: number }) {
+function NumField({
+  label,
+  value,
+  onChange,
+  step = 1,
+}: {
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+  step?: number;
+}) {
   return (
     <div className="grid gap-1.5">
       <Label className="text-xs text-muted-foreground">{label}</Label>
-      <Input type="number" value={value} step={step} min={0} onChange={(e) => onChange(Number(e.target.value) || 0)} className="h-9" />
+      <Input
+        type="number"
+        value={value}
+        step={step}
+        min={0}
+        onChange={(e) => onChange(Number(e.target.value) || 0)}
+        className="h-9"
+      />
     </div>
   );
 }
 
-function Metric({ icon, label, value, tone }: { icon: React.ReactNode; label: string; value: string; tone?: string }) {
+function Metric({
+  icon,
+  label,
+  value,
+  tone,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  tone?: string;
+}) {
   return (
     <Card className="p-4">
-      <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">{icon}{label}</div>
+      <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
+        {icon}
+        {label}
+      </div>
       <div className={`text-2xl font-semibold tracking-tight ${tone ?? ""}`}>{value}</div>
     </Card>
   );

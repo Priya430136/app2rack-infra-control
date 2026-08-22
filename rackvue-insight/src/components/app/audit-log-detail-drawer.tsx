@@ -1,9 +1,22 @@
 import {
-  Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle,
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ScrollText, ShieldCheck, UserIcon, ArrowRight, Copy, Plus, Minus, Pencil } from "lucide-react";
+import {
+  ScrollText,
+  ShieldCheck,
+  UserIcon,
+  ArrowRight,
+  Copy,
+  Plus,
+  Minus,
+  Pencil,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { AuditLogRow } from "@/lib/audit-logs.functions";
@@ -53,7 +66,10 @@ function DiffTable({
     modified: changed.filter((c) => c.kind === "modified").length,
   };
 
-  const kindMeta: Record<ChangeKind, { label: string; chip: string; row: string; icon: typeof Plus }> = {
+  const kindMeta: Record<
+    ChangeKind,
+    { label: string; chip: string; row: string; icon: typeof Plus }
+  > = {
     added: {
       label: "added",
       chip: "bg-success/15 text-success border-success/30",
@@ -92,19 +108,28 @@ function DiffTable({
               {changed.length} change{changed.length === 1 ? "" : "s"}
             </span>
             {counts.added > 0 && (
-              <Badge variant="outline" className={cn("h-5 px-1.5 text-[10px]", kindMeta.added.chip)}>
+              <Badge
+                variant="outline"
+                className={cn("h-5 px-1.5 text-[10px]", kindMeta.added.chip)}
+              >
                 <Plus className="mr-0.5 h-2.5 w-2.5" />
                 {counts.added} added
               </Badge>
             )}
             {counts.modified > 0 && (
-              <Badge variant="outline" className={cn("h-5 px-1.5 text-[10px]", kindMeta.modified.chip)}>
+              <Badge
+                variant="outline"
+                className={cn("h-5 px-1.5 text-[10px]", kindMeta.modified.chip)}
+              >
                 <Pencil className="mr-0.5 h-2.5 w-2.5" />
                 {counts.modified} modified
               </Badge>
             )}
             {counts.removed > 0 && (
-              <Badge variant="outline" className={cn("h-5 px-1.5 text-[10px]", kindMeta.removed.chip)}>
+              <Badge
+                variant="outline"
+                className={cn("h-5 px-1.5 text-[10px]", kindMeta.removed.chip)}
+              >
                 <Minus className="mr-0.5 h-2.5 w-2.5" />
                 {counts.removed} removed
               </Badge>
@@ -253,21 +278,23 @@ export function AuditLogDetailDrawer({
             </div>
             <SheetTitle className="font-mono text-sm">{row.action}</SheetTitle>
           </div>
-          <SheetDescription>
-            {new Date(row.created_at).toLocaleString()}
-          </SheetDescription>
+          <SheetDescription>{new Date(row.created_at).toLocaleString()}</SheetDescription>
         </SheetHeader>
 
         <div className="mt-6 space-y-6">
           <section className="space-y-2">
-            <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Actor</h3>
+            <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Actor
+            </h3>
             <div className="flex items-center gap-3 rounded-md border border-border/60 bg-card/40 p-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/30 to-chart-4/20 text-xs font-semibold">
                 {(row.actor_name ?? row.actor_email ?? "?").charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{row.actor_name ?? "Unknown"}</p>
-                <p className="truncate text-xs text-muted-foreground">{row.actor_email ?? row.user_id}</p>
+                <p className="truncate text-xs text-muted-foreground">
+                  {row.actor_email ?? row.user_id}
+                </p>
               </div>
               <Badge variant="outline" className={roleStyles[row.actor_role]}>
                 {row.actor_role === "admin" ? (
@@ -282,7 +309,9 @@ export function AuditLogDetailDrawer({
 
           {row.entity_type ? (
             <section className="space-y-2">
-              <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Entity</h3>
+              <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Entity
+              </h3>
               <div className="rounded-md border border-border/60 bg-card/40 p-3 font-mono text-xs">
                 <span className="text-muted-foreground">{row.entity_type}</span>
                 {row.entity_id ? <span> · {row.entity_id}</span> : null}
@@ -292,7 +321,9 @@ export function AuditLogDetailDrawer({
 
           {before && after ? (
             <section className="space-y-2">
-              <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Changes</h3>
+              <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Changes
+              </h3>
               <DiffTable before={before} after={after} />
             </section>
           ) : null}
@@ -310,12 +341,16 @@ export function AuditLogDetailDrawer({
 
           <section className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Raw JSON</h3>
+              <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Raw JSON
+              </h3>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => {
-                  navigator.clipboard.writeText(rawJson).then(() => toast.success("Copied to clipboard"));
+                  navigator.clipboard
+                    .writeText(rawJson)
+                    .then(() => toast.success("Copied to clipboard"));
                 }}
               >
                 <Copy className="mr-1.5 h-3.5 w-3.5" /> Copy

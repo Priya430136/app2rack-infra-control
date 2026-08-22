@@ -38,17 +38,26 @@ export const MainVideo: React.FC = () => {
         <TransitionSeries.Sequence durationInFrames={260}>
           <Scene3Dashboard />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={springTiming({ config: { damping: 200 }, ...T })} />
+        <TransitionSeries.Transition
+          presentation={slide({ direction: "from-right" })}
+          timing={springTiming({ config: { damping: 200 }, ...T })}
+        />
 
         <TransitionSeries.Sequence durationInFrames={220}>
           <Scene4Applications />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={springTiming({ config: { damping: 200 }, ...T })} />
+        <TransitionSeries.Transition
+          presentation={slide({ direction: "from-right" })}
+          timing={springTiming({ config: { damping: 200 }, ...T })}
+        />
 
         <TransitionSeries.Sequence durationInFrames={210}>
           <Scene5Servers />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={springTiming({ config: { damping: 200 }, ...T })} />
+        <TransitionSeries.Transition
+          presentation={slide({ direction: "from-right" })}
+          timing={springTiming({ config: { damping: 200 }, ...T })}
+        />
 
         <TransitionSeries.Sequence durationInFrames={210}>
           <Scene6Racks />
@@ -58,7 +67,10 @@ export const MainVideo: React.FC = () => {
         <TransitionSeries.Sequence durationInFrames={260}>
           <Scene7LogAnalyzer />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={springTiming({ config: { damping: 200 }, ...T })} />
+        <TransitionSeries.Transition
+          presentation={slide({ direction: "from-right" })}
+          timing={springTiming({ config: { damping: 200 }, ...T })}
+        />
 
         <TransitionSeries.Sequence durationInFrames={240}>
           <Scene8Optimization />
@@ -73,7 +85,10 @@ export const MainVideo: React.FC = () => {
         <TransitionSeries.Sequence durationInFrames={210}>
           <Scene10Incidents />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={springTiming({ config: { damping: 200 }, ...T })} />
+        <TransitionSeries.Transition
+          presentation={slide({ direction: "from-right" })}
+          timing={springTiming({ config: { damping: 200 }, ...T })}
+        />
 
         <TransitionSeries.Sequence durationInFrames={150}>
           <Scene11Settings />

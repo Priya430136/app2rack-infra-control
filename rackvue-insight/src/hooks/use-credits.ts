@@ -14,7 +14,11 @@ export function useCredits() {
   async function spend(feature: FeatureCode): Promise<boolean> {
     const cost = CREDIT_COSTS[feature];
     if (isUnlimited) {
-      try { await consumeCredits({ data: { feature, amount: 0 } }); } catch { /* ignore */ }
+      try {
+        await consumeCredits({ data: { feature, amount: 0 } });
+      } catch {
+        /* ignore */
+      }
       return true;
     }
     if (balance < cost) {
