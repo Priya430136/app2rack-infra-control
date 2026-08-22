@@ -16,13 +16,19 @@ const app = express();
 app.use(helmet()); // Security headers
 
 const configuredOrigin = process.env.CLIENT_URL || 'http://localhost:8080';
-const allowedOrigins = configuredOrigin.split(',').map((origin) => origin.trim()).filter(Boolean);
+const allowedOrigins = new Set(
+  configuredOrigin
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/$/, ''))
+    .filter(Boolean),
+);
+allowedOrigins.add('https://tanstack-start-app.sehrawatpriya430.workers.dev');
 
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.has(origin.replace(/\/$/, ''))) {
       return callback(null, true);
     }
 
