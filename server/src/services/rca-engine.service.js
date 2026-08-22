@@ -76,7 +76,7 @@ const REPORT_SHAPE_INSTRUCTIONS = `Return ONLY a JSON object with exactly this s
 }`;
 
 async function runAiAnalysis(ctx) {
-  const system = `You are an SRE performing root cause analysis on a specific infrastructure incident. ${REPORT_SHAPE_INSTRUCTIONS}`;
+  const system = `You are an SRE performing root cause analysis on a specific infrastructure incident. Keep every string concise and each array to 3 items maximum. ${REPORT_SHAPE_INSTRUCTIONS}`;
   const prompt = `Incident context:\n${JSON.stringify(ctx, null, 2)}`;
   return ai.completeJson(system, prompt);
 }
